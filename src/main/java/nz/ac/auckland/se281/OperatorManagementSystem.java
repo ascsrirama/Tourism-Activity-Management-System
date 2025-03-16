@@ -7,6 +7,7 @@ public class OperatorManagementSystem {
 
   public void searchOperators(String keyword) {
     // TODO implement
+    System.out.println("There are no matching operators found.");
   }
 
   public void createOperator(String operatorName, String location) {
