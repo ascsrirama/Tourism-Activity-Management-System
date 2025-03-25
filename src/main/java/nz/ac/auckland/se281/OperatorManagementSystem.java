@@ -23,6 +23,8 @@ public class OperatorManagementSystem {
 
   public void viewActivities(String operatorId) {
     // TODO implement
+
+    
   }
 
   public void createActivity(String activityName, String activityType, String operatorId) {
