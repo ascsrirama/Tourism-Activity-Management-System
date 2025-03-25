@@ -17,13 +17,36 @@ public class OperatorManagementSystem {
     Location locationFound = Location.fromString(location);
     String locationAsString = locationFound.getFullName();
 
-
-    MessageCli.OPERATOR_CREATED.printMessage(operatorName, "SOMETHINGELSE", locationAsString); 
+    Operator op = new Operator(operatorName, locationFound);
+ 
     String[] words = operatorName.split(" ");
 
+    String output = "";
+
+    String initials = "";
+
     for(String word : words) { 
-      System.out.print(word.charAt(0));
+      initials += word.charAt(0);
     }
+    //String listOfLocations = operatorName;
+    // for (String place : listOfLocations) { 
+    //   if (place == ) { 
+    //     int number = 001; 
+    //   }
+
+    // }
+    
+    String number = "001";
+
+    output += initials;
+
+    output += "-" + locationFound.getLocationAbbreviation() + "-" + number;
+
+
+
+    MessageCli.OPERATOR_CREATED.printMessage(operatorName, output, locationAsString); 
+
+
 
   }
 
