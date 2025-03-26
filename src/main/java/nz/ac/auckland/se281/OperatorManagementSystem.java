@@ -1,11 +1,15 @@
 package nz.ac.auckland.se281;
 
+import java.util.ArrayList;
+
 import nz.ac.auckland.se281.Types.Location;
 
 public class OperatorManagementSystem {
-
+ArrayList<String> operators = new ArrayList<>();
   // Do not change the parameters of the constructor
-  public OperatorManagementSystem() {}
+  public OperatorManagementSystem() {
+    this.operators = new ArrayList<>();
+  }
 
   public void searchOperators(String keyword) {
     // TODO implement
@@ -13,12 +17,13 @@ public class OperatorManagementSystem {
   }
 
   public void createOperator(String operatorName, String location) {
-    // TODO implement
+  
     Location locationFound = Location.fromString(location);
     String locationAsString = locationFound.getFullName();
 
-    Operator op = new Operator(operatorName, locationFound);
- 
+  
+    //Operator op = new Operator(operatorName, locationFound);
+
     String[] words = operatorName.split(" ");
 
     String output = "";
@@ -28,17 +33,22 @@ public class OperatorManagementSystem {
     for(String word : words) { 
       initials += word.charAt(0);
     }
-    //String listOfLocations = operatorName;
-    // for (String place : listOfLocations) { 
-    //   if (place == ) { 
-    //     int number = 001; 
-    //   }
+    
 
+    // if( ) { 
+    //   int count = 0; 
+    //   count++; 
     // }
     
-    String number = "001";
+    //String number = "00" + count;
+    // int number = 0; 
+    // for (String loc:operators) { 
+    //   if( loc.equals(operators)) { 
+    //     number++ ; 
+    //   }
+    // }
 
-    output += initials;
+    output += initials; //takes the initials and moves them into the print out
 
     output += "-" + locationFound.getLocationAbbreviation() + "-" + number;
 
