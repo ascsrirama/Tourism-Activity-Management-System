@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import nz.ac.auckland.se281.Types.Location;
 
 public class OperatorManagementSystem {
-ArrayList<String> operators = new ArrayList<>();
+ArrayList<Operator> operators = new ArrayList<>();
   // Do not change the parameters of the constructor
   public OperatorManagementSystem() {
     this.operators = new ArrayList<>();
@@ -22,8 +22,7 @@ ArrayList<String> operators = new ArrayList<>();
     String locationAsString = locationFound.getFullName();
 
   
-    //Operator op = new Operator(operatorName, locationFound);
-
+    
     String[] words = operatorName.split(" ");
 
     String output = "";
@@ -34,26 +33,19 @@ ArrayList<String> operators = new ArrayList<>();
       initials += word.charAt(0);
     }
     
-
-    // if( ) { 
-    //   int count = 0; 
-    //   count++; 
-    // }
+    output += initials; //takes the initials and moves them into the print out    
+   
+    Operator op = new Operator(operatorName, locationFound, initials);
     
-    //String number = "00" + count;
-    // int number = 0; 
-    // for (String loc:operators) { 
-    //   if( loc.equals(operators)) { 
-    //     number++ ; 
-    //   }
-    // }
-
-    output += initials; //takes the initials and moves them into the print out
-
-    output += "-" + locationFound.getLocationAbbreviation() + "-" + number;
-
-
-
+    operators.add(op);
+      
+    int count=0;
+    for (Operator place: operators){ 
+      if(place.returnOperator().equals(operatorName))
+        count++;
+      }
+      
+  output += "-" + locationFound.getLocationAbbreviation() + "-"+ "00"+count ;
     MessageCli.OPERATOR_CREATED.printMessage(operatorName, output, locationAsString); 
 
 
