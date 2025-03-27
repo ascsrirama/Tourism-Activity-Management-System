@@ -1,7 +1,7 @@
 package nz.ac.auckland.se281;
 
 public class Operator {
- private  String operatorName; 
+ private String operatorName; 
  private Types.Location location;
  private String opID;
 
