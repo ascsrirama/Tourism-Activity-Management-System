@@ -82,10 +82,13 @@ ArrayList<Operator> operators = new ArrayList<>();
     Operator op = new Operator(operatorName, locationFound, initials);  
     operators.add(op);
     
+
+    // ===== 3digit number maker =====
     int count=0;
-    for (Operator place: operators){ 
-      if(place.returnOperator().equals(operatorName))
-        count++;
+    for (Operator op_existing: operators){ 
+      if(op_existing.returnOperator().equals(operatorName) && op_existing.getLocation().equals(locationFound)){
+         count++;
+        } 
       }
       
     output += "-" + locationFound.getLocationAbbreviation() + "-"+ "00"+count ;
