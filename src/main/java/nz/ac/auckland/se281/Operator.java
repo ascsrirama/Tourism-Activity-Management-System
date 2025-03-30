@@ -16,5 +16,11 @@ public class Operator {
       return this.operatorName;
   }
 
+  public String getOpID() {
+    return this.opID;
+  }
 
+  public Types.Location getLocation() {
+    return this.location;
+}
 }
