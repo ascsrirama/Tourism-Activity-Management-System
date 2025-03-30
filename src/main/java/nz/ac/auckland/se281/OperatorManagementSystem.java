@@ -1,6 +1,7 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import nz.ac.auckland.se281.Types.Location;
 
@@ -21,40 +22,75 @@ ArrayList<Operator> operators = new ArrayList<>();
   public void searchOperators(String keyword) {
     if (operators.isEmpty()) {
       System.out.println("There are no matching operators found.");
-      return; 
+      return;
   }
-
+  HashMap<String, Integer> op_per_location = new HashMap<>();
+  int count = 0;
+  // If keyword is "*", display all operators
   if (keyword.equals("*")) {
-      int count = operators.size();
-      String verb = (count == 1) ? "is" : "are";
-      String plural = (count == 1) ? "" : "s";
-      String ending = (count == 0) ? "." : ":";
+      int totalCount = operators.size();
+      String verb = (totalCount == 1) ? "is" : "are";
+      String plural = (totalCount == 1) ? "" : "s";
+      String ending = (totalCount == 0) ? "." : ":";
 
-      // Print out the message for the number of operators found
-      MessageCli.OPERATORS_FOUND.printMessage(verb, String.valueOf(count), plural, ending);
+      MessageCli.OPERATORS_FOUND.printMessage(verb, String.valueOf(totalCount), plural, ending);
 
-      // Loop through each operator and format the output
+      // Print each operator's information
       for (Operator op : operators) {
-          // Getting the operator's location and ID
-          String location = op.getLocation().getFullName();
-          String operatorName = op.returnOperator();
-          String locationAbbr = op.getLocation().getLocationAbbreviation();
-
-          String[] words = operatorName.split(" ");
-          String initials = "";
-          for (String word : words) {
-              initials += word.charAt(0); // Get the initials
-          }
-          int countID = 1; // 
-          String operatorIDFormatted = initials + "-" + locationAbbr + "-" + String.format("%03d", countID);
-
-          // Printing out the formatted operator details
-          System.out.println("  * " + operatorName + " ('" + operatorIDFormatted + "' located in '" + location + "')");
+          printOperator(op, op_per_location);
       }
+  } else {
+      // For non-"*" keyword searches\
+      int matchingCount = 0;  
+      for (Operator op : operators) {
+          String operatorName = op.returnOperator().toLowerCase();
+          String locationEnglish = op.getLocation().getNameEnglish().toLowerCase();
+          String locationTeReo = op.getLocation().getNameTeReo().toLowerCase();
+          String locationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
+
+          // Check if the keyword matches the location (either English or Māori)
+          if (locationEnglish.contains(keyword.toLowerCase()) || locationTeReo.contains(keyword.toLowerCase())) {
+              // Print the matching operator details
+              printOperator(op, op_per_location);
+              matchingCount++;
+          }
+      }
+
+      // Print for matched operators
+      String verb = (matchingCount == 1) ? "is" : "are";
+      String plural = (matchingCount == 1) ? "" : "s";
+      String ending = (matchingCount == 0) ? "." : ":";
+      MessageCli.OPERATORS_FOUND.printMessage(verb, String.valueOf(matchingCount), plural, ending);
   }
-    }
+   
+  }
     
   //END OF SEARCH OPERATORS//
+
+  //This method will make life easier by allowing me to have the apt logic 
+  private void printOperator(Operator op, HashMap<String, Integer> op_per_location) {
+    String location = op.getLocation().getFullName();
+    String operatorName = op.returnOperator();
+    String locationAbbr = op.getLocation().getLocationAbbreviation();
+
+    // Get initials and formating the operator ID
+    String[] words = operatorName.split(" ");
+    String initials = "";
+    for (String word : words) {
+        initials += word.charAt(0); // Get the initials
+    }
+
+    // Increment the count
+    int countID = op_per_location.getOrDefault(locationAbbr, 0) + 1;
+    op_per_location.put(locationAbbr, countID); // Store the updated count for the location
+
+    // Format operator ID 
+    String operatorIDFormatted = initials + "-" + locationAbbr + "-" + String.format("%03d", countID);
+
+    // Print the operator details with the formatted ID to the output
+    System.out.println("  * " + operatorName + " ('" + operatorIDFormatted + "' located in '" + location + "')");
+}
+ 
 
   public void createOperator(String operatorName, String location) {
   
