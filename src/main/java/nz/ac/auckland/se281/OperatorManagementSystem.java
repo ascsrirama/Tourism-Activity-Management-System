@@ -60,6 +60,13 @@ ArrayList<Operator> operators = new ArrayList<>();
   
     Location locationFound = Location.fromString(location);
     String locationAsString = locationFound.getFullName();
+    //This thing is to check for duplicates of operators
+    for(Operator existing : operators) {
+      if(existing.returnOperator().equals(operatorName) && existing.getLocation().equals(locationFound)) {
+        MessageCli.OPERATOR_NOT_CREATED_ALREADY_EXISTS_SAME_LOCATION.printMessage(operatorName,locationAsString);
+        return;
+      }
+    }
 
   
     // This will make that id thing that has intials of operator and location and the 3dig no.
