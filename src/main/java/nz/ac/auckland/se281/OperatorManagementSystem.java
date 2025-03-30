@@ -60,6 +60,7 @@ ArrayList<Operator> operators = new ArrayList<>();
   
     Location locationFound = Location.fromString(location);
     String locationAsString = locationFound.getFullName();
+    
     //This thing is to check for duplicates of operators
     for(Operator existing : operators) {
       if(existing.returnOperator().equals(operatorName) && existing.getLocation().equals(locationFound)) {
@@ -67,8 +68,7 @@ ArrayList<Operator> operators = new ArrayList<>();
         return;
       }
     }
-
-  
+    
     // This will make that id thing that has intials of operator and location and the 3dig no.
     String[] words = operatorName.split(" ");
     String output = "";
@@ -77,26 +77,22 @@ ArrayList<Operator> operators = new ArrayList<>();
       initials += word.charAt(0);
     }  
     output += initials; //takes the initials and moves them into the print out    
-  
-    //This here makes the 3dig no.
+    
+    
+    
+    
+    // ===== 3digit number maker =====
+    int count = 1; 
+    for (Operator op_existing : operators) {
+        if (op_existing.getLocation().equals(locationFound)) {
+            count++;
+        }
+    }
     Operator op = new Operator(operatorName, locationFound, initials);  
     operators.add(op);
-    
-
-    // ===== 3digit number maker =====
-    int count=0;
-    for (Operator op_existing: operators){ 
-      if(op_existing.returnOperator().equals(operatorName) && op_existing.getLocation().equals(locationFound)){
-         count++;
-        } 
-      }
-      
     output += "-" + locationFound.getLocationAbbreviation() + "-"+ "00"+count ;
     
     MessageCli.OPERATOR_CREATED.printMessage(operatorName, output, locationAsString); 
-
-
-
   }
 
   public void viewActivities(String operatorId) {
