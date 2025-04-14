@@ -53,12 +53,16 @@ ArrayList<Operator> operators = new ArrayList<>();
               matchingCount++;
           }
       }
+      if (matchingCount == 0) {
+        MessageCli.OPERATORS_FOUND.printMessage("There are no matching operators found.");
+      } else {
 
       // Print for matched operators
       String verb = (matchingCount == 1) ? "is" : "are";
       String plural = (matchingCount == 1) ? "" : "s";
-      String ending = (matchingCount == 0) ? "." : ":";
+      String ending = (matchingCount == 0) ? "." : ":" ;
       MessageCli.OPERATORS_FOUND.printMessage(verb, String.valueOf(matchingCount), plural, ending);
+      }
   }
    
   }
