@@ -38,21 +38,22 @@ ArrayList<Operator> operators = new ArrayList<>();
           printOperator(op, op_per_location);
       }
   } else {
-      // For non-"*" keyword searches\
-      int matchingCount = 0;  
+      // For non-"*" keyword searches
+      ArrayList<Operator> MATCHING = new ArrayList<>();
+      //int matchingCount = 0;  
       for (Operator op : operators) {
-          //String operatorName = op.returnOperator().toLowerCase();
+          String operatorName = op.returnOperator().toLowerCase();
           String locationEnglish = op.getLocation().getNameEnglish().toLowerCase();
           String locationTeReo = op.getLocation().getNameTeReo().toLowerCase();
           String locationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
 
           // Check if the keyword matches the location (either English or Māori)
-          if (locationEnglish.contains(keyword.toLowerCase().trim()) || locationTeReo.contains(keyword.toLowerCase().trim()) || locationAbbr.contains(keyword.toLowerCase().trim()) ) {
-              // Print the matching operator details
-              printOperator(op, op_per_location);
-              matchingCount++;
+          if (locationEnglish.contains(keyword.toLowerCase().trim()) || locationTeReo.contains(keyword.toLowerCase().trim()) || locationAbbr.contains(keyword.toLowerCase().trim()) ||
+          operatorName.contains(keyword.toLowerCase().trim())) {
+              MATCHING.add(op);
           }
       }
+      int matchingCount = MATCHING.size();
       if (matchingCount == 0) {
         MessageCli.OPERATORS_FOUND.printMessage("There are no matching operators found.");
       } else {
@@ -62,8 +63,11 @@ ArrayList<Operator> operators = new ArrayList<>();
       String plural = (matchingCount == 1) ? "" : "s";
       String ending = (matchingCount == 0) ? "." : ":" ;
       MessageCli.OPERATORS_FOUND.printMessage(verb, String.valueOf(matchingCount), plural, ending);
+      for (Operator op: MATCHING){
+        printOperator(op, op_per_location);
       }
   }
+}
    
   }
     
@@ -74,23 +78,25 @@ ArrayList<Operator> operators = new ArrayList<>();
     String location = op.getLocation().getFullName();
     String operatorName = op.returnOperator();
     String locationAbbr = op.getLocation().getLocationAbbreviation();
+    System.out.println("  * " + operatorName + " ('" + op.getOpID() + "' located in '" + location + "')");
 
-    // Get initials and formating the operator ID
-    String[] words = operatorName.split(" ");
-    String initials = "";
-    for (String word : words) {
-        initials += word.charAt(0); // Get the initials
-    }
 
-    // Increment the count
-    int countID = op_per_location.getOrDefault(locationAbbr, 0) + 1;
-    op_per_location.put(locationAbbr, countID); // Store the updated count for the location
+    // // Get initials and formating the operator ID
+    // String[] words = operatorName.split(" ");
+    // String initials = "";
+    // for (String word : words) {
+    //     initials += word.charAt(0); // Get the initials
+    // }
 
-    // Format operator ID 
-    String operatorIDFormatted = initials + "-" + locationAbbr + "-" + String.format("%03d", countID);
+    // // Increment the count
+    // int countID = op_per_location.getOrDefault(locationAbbr, 0) + 1;
+    // op_per_location.put(locationAbbr, countID); // Store the updated count for the location
 
-    // Print the operator details with the formatted ID to the output
-    System.out.println("  * " + operatorName + " ('" + operatorIDFormatted + "' located in '" + location + "')");
+    // // Format operator ID 
+    // String operatorIDFormatted = initials + "-" + locationAbbr + "-" + String.format("%03d", countID);
+
+    // // Print the operator details with the formatted ID to the output
+    // System.out.println("  * " + operatorName + " ('" + operatorIDFormatted + "' located in '" + location + "')");
 }
  
 // CREATE OPERATOR STARTS HERE
@@ -131,11 +137,16 @@ ArrayList<Operator> operators = new ArrayList<>();
                 count++;
             }
         }
-        Operator op = new Operator(operatorName, locationFound, initials);  
+        String operatorID = initials + "-" + locationFound.getLocationAbbreviation() + "-" + String.format("%03d", count);
+        Operator op = new Operator(operatorName, locationFound, operatorID);  
         operators.add(op);
-        output += "-" + locationFound.getLocationAbbreviation() + "-"+ "00"+count ;
+
+        MessageCli.OPERATOR_CREATED.printMessage(operatorName, operatorID, locationAsString); 
+        // Operator op = new Operator(operatorName, locationFound, initials);  
+        // operators.add(op);
+        // output += "-" + locationFound.getLocationAbbreviation() + "-"+ "00"+count ;
         
-        MessageCli.OPERATOR_CREATED.printMessage(operatorName, output, locationAsString); 
+        // MessageCli.OPERATOR_CREATED.printMessage(operatorName, output, locationAsString); 
       } 
   else {
     MessageCli.OPERATOR_NOT_CREATED_INVALID_OPERATOR_NAME.printMessage(operatorName);
