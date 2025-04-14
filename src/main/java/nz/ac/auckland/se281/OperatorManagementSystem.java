@@ -44,10 +44,10 @@ ArrayList<Operator> operators = new ArrayList<>();
           //String operatorName = op.returnOperator().toLowerCase();
           String locationEnglish = op.getLocation().getNameEnglish().toLowerCase();
           String locationTeReo = op.getLocation().getNameTeReo().toLowerCase();
-          //String locationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
+          String locationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
 
           // Check if the keyword matches the location (either English or Māori)
-          if (locationEnglish.contains(keyword.toLowerCase().trim()) || locationTeReo.contains(keyword.toLowerCase().trim())) {
+          if (locationEnglish.contains(keyword.toLowerCase().trim()) || locationTeReo.contains(keyword.toLowerCase().trim()) || locationAbbr.contains(keyword.toLowerCase().trim()) ) {
               // Print the matching operator details
               printOperator(op, op_per_location);
               matchingCount++;
