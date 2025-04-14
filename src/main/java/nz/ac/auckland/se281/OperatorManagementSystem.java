@@ -91,10 +91,22 @@ ArrayList<Operator> operators = new ArrayList<>();
     System.out.println("  * " + operatorName + " ('" + operatorIDFormatted + "' located in '" + location + "')");
 }
  
-
+// CREATE OPERATOR STARTS HERE
   public void createOperator(String operatorName, String location) {
   
-    Location locationFound = Location.fromString(location);
+    // Location locationFound = Location.fromString(location);
+    // String locationAsString = locationFound.getFullName();
+    
+    // //This thing is to check for duplicates of operators
+    // for(Operator existing : operators) {
+    //   if(existing.returnOperator().equals(operatorName) && existing.getLocation().equals(locationFound)) {
+    //     MessageCli.OPERATOR_NOT_CREATED_ALREADY_EXISTS_SAME_LOCATION.printMessage(operatorName,locationAsString);
+    //     return;
+    //   }
+    // }
+    if ( operatorName.trim().length() >= 3 ) {
+
+      Location locationFound = Location.fromString(location);
     String locationAsString = locationFound.getFullName();
     
     //This thing is to check for duplicates of operators
@@ -104,32 +116,39 @@ ArrayList<Operator> operators = new ArrayList<>();
         return;
       }
     }
+
+
+
+
+      // This will make that id thing that has intials of operator and location and the 3dig no.
+      String[] words = operatorName.split(" ");
+      String output = "";
+      String initials = "";
+      for(String word : words) { 
+        initials += word.charAt(0);
+      }  
+      output += initials; //takes the initials and moves them into the print out    
+      
     
-    // This will make that id thing that has intials of operator and location and the 3dig no.
-    String[] words = operatorName.split(" ");
-    String output = "";
-    String initials = "";
-    for(String word : words) { 
-      initials += word.charAt(0);
-    }  
-    output += initials; //takes the initials and moves them into the print out    
-    
-    
-    
-    
-    // ===== 3digit number maker =====
-    int count = 1; 
-    for (Operator op_existing : operators) {
-        if (op_existing.getLocation().equals(locationFound)) {
-            count++;
-        }
-    }
-    Operator op = new Operator(operatorName, locationFound, initials);  
-    operators.add(op);
-    output += "-" + locationFound.getLocationAbbreviation() + "-"+ "00"+count ;
-    
-    MessageCli.OPERATOR_CREATED.printMessage(operatorName, output, locationAsString); 
+      // ===== 3digit number maker =====
+      int count = 1; 
+      for (Operator op_existing : operators) {
+          if (op_existing.getLocation().equals(locationFound)) {
+              count++;
+          }
+      }
+      Operator op = new Operator(operatorName, locationFound, initials);  
+      operators.add(op);
+      output += "-" + locationFound.getLocationAbbreviation() + "-"+ "00"+count ;
+      
+      MessageCli.OPERATOR_CREATED.printMessage(operatorName, output, locationAsString); 
+  } 
+  else {
+    MessageCli.OPERATOR_NOT_CREATED_INVALID_OPERATOR_NAME.printMessage(operatorName);
   }
+
+  }
+  // CREATE OPERATOR ENDS HERE
 
   public void viewActivities(String operatorId) {
     // TODO implement
