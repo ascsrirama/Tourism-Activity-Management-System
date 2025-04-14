@@ -16,8 +16,6 @@ ArrayList<Operator> operators = new ArrayList<>();
     this.operators = new ArrayList<>();
   }
 
-
-
   // SEARCH OPERATORS BEGINS HERE // 
   public void searchOperators(String keyword) {
     if (operators.isEmpty()) {
@@ -25,9 +23,9 @@ ArrayList<Operator> operators = new ArrayList<>();
       return;
   }
   HashMap<String, Integer> op_per_location = new HashMap<>();
-  int count = 0;
+  //int count = 0;
   // If keyword is "*", display all operators
-  if (keyword.equals("*")) {
+  if (keyword.trim().equals("*")) {
       int totalCount = operators.size();
       String verb = (totalCount == 1) ? "is" : "are";
       String plural = (totalCount == 1) ? "" : "s";
@@ -43,13 +41,13 @@ ArrayList<Operator> operators = new ArrayList<>();
       // For non-"*" keyword searches\
       int matchingCount = 0;  
       for (Operator op : operators) {
-          String operatorName = op.returnOperator().toLowerCase();
+          //String operatorName = op.returnOperator().toLowerCase();
           String locationEnglish = op.getLocation().getNameEnglish().toLowerCase();
           String locationTeReo = op.getLocation().getNameTeReo().toLowerCase();
-          String locationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
+          //String locationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
 
           // Check if the keyword matches the location (either English or Māori)
-          if (locationEnglish.contains(keyword.toLowerCase()) || locationTeReo.contains(keyword.toLowerCase())) {
+          if (locationEnglish.contains(keyword.toLowerCase().trim()) || locationTeReo.contains(keyword.toLowerCase().trim())) {
               // Print the matching operator details
               printOperator(op, op_per_location);
               matchingCount++;
