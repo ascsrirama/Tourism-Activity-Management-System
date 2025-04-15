@@ -1,18 +1,18 @@
 package nz.ac.auckland.se281;
 
-import nz.ac.auckland.se281.Types.ActivityType;
+
 
 public class Activity {
   private String name;
-  private Types.ActivityType type; 
+  private Types.ActivityType Type; 
   private String activityID;
-  private Operator operator;
 
-  public Activity (String name,  Types.ActivityType type, String activityID, Operator operator) {
+
+  public Activity (String name,  Types.ActivityType Type, String activityID) {
     this.name = name;
-    this.type = type; 
+    this.Type = Type; 
     this.activityID = activityID;
-    this.operator = operator;
+    
 
   }
 
@@ -21,15 +21,11 @@ public class Activity {
   }
 
   public Types.ActivityType getType() {
-    return type;
+    return Type;
   }
 
   public String getActivityID() {
     return activityID;
-  }
-
-  public Operator getOperator() {
-    return operator;
   }
 
   

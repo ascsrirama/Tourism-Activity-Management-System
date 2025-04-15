@@ -3,6 +3,7 @@ package nz.ac.auckland.se281;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 import nz.ac.auckland.se281.Types.Location;
 
 public class OperatorManagementSystem {
@@ -168,8 +169,33 @@ ArrayList<Operator> operators = new ArrayList<>();
   // VIEW ACTIVITES ENDS HERE ===========================
 
   public void createActivity(String activityName, String activityType, String operatorId) {
+    Types.ActivityType type = Types.ActivityType.fromString(activityType);
+    if (activityName.trim().length() < 3) {
+      MessageCli.ACTIVITY_NOT_CREATED_INVALID_ACTIVITY_NAME.printMessage(activityName);
+      return;
+    }
 
-    // TODO implement
+
+    Operator operator = null;
+    for (Operator op : operators) {
+      if (op.getOpID().equals(operatorId)) {
+        operator= op;
+        break;
+      }
+    }
+
+    //need to make Activity id 
+    int activityCount = operator.getActivities().size();
+    String activityID = operator.getOpID() + "-" + String.format("%03d", activityCount);
+
+
+    Activity newActivity = new Activity(activityName, type, activityID);
+    operator.addActivity(newActivity.getName());
+
+    MessageCli.ACTIVITY_CREATED.printMessage(activityName, activityID, operatorId);
+
+
+
   }
 
   public void searchActivities(String keyword) {

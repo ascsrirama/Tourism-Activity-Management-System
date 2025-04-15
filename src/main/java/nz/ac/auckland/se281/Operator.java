@@ -38,7 +38,7 @@ public class Operator {
   
   
   public ArrayList<String> getActivities() {
-    return this.activities;
+    return activities;
   }
 
  
