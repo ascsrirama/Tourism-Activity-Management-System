@@ -134,21 +134,38 @@ ArrayList<Operator> operators = new ArrayList<>();
         }
     }
   // CREATE OPERATOR ENDS HERE
-
+  
+  // VIEW ACTIVITIES BEGINS HERE============================
   public void viewActivities(String operatorId) {
-   for (Operator op : operators) { 
-    if (op.getOpID().equals(operatorId)){
-      ArrayList<String> activities = op.getActivities();
-      
-      if (activities.isEmpty()){
-        MessageCli.ACTIVITIES_FOUND.printMessage("are", "no", "ies", ".");
-        return;
-      }
+    for (Operator op : operators) { 
+
+        if (op.getOpID().equals(operatorId)){
+          ArrayList<String> activities = op.getActivities();
+          
+            if (activities.isEmpty()){
+              MessageCli.ACTIVITIES_FOUND.printMessage("are", "no", "ies", ".");
+              
+            } else {
+
+            int counter = activities.size();
+            String verb = (counter == 1) ? "is" : "are";
+            String plural = (counter == 1) ? "y" : "ies";
+            String ending = ":" ;
+            MessageCli.ACTIVITIES_FOUND.printMessage(verb, String.valueOf(counter), plural, ending);
+
+            //add the stars at the front
+            for (String activity : activities) {
+              System.out.println("  * " + activity); 
+            }
+          }
+            return;  
+        } 
     }
-   } 
 
     MessageCli.OPERATOR_NOT_FOUND.printMessage(operatorId);
+    
   }
+  // VIEW ACTIVITES ENDS HERE ===========================
 
   public void createActivity(String activityName, String activityType, String operatorId) {
 
