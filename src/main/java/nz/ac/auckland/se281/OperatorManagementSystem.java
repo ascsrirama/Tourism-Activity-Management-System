@@ -180,7 +180,7 @@ ArrayList<Operator> operators = new ArrayList<>();
       for (Operator op : operators) {
         if (op.getOpID().equals(operatorId)) {
           //need to make Activity id 
-            int activityCount = op.getActivities().size();
+            int activityCount = op.getActivities().size()+1;
             String activityID = op.getOpID() + "-" + String.format("%03d", activityCount);
 
 
