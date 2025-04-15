@@ -169,32 +169,32 @@ ArrayList<Operator> operators = new ArrayList<>();
   // VIEW ACTIVITES ENDS HERE ===========================
 
   public void createActivity(String activityName, String activityType, String operatorId) {
-    Types.ActivityType type = Types.ActivityType.fromString(activityType);
+    
     if (activityName.trim().length() < 3) {
       MessageCli.ACTIVITY_NOT_CREATED_INVALID_ACTIVITY_NAME.printMessage(activityName);
       return;
-    }
+    } else {
+    
+      Types.ActivityType type = Types.ActivityType.fromString(activityType);
+
+      for (Operator op : operators) {
+        if (op.getOpID().equals(operatorId)) {
+          //need to make Activity id 
+            int activityCount = op.getActivities().size();
+            String activityID = op.getOpID() + "-" + String.format("%03d", activityCount);
 
 
-    Operator operator = null;
-    for (Operator op : operators) {
-      if (op.getOpID().equals(operatorId)) {
-        operator= op;
-        break;
+            Activity newActivity = new Activity(activityName, type, activityID);
+            op.addActivity(newActivity.getName());
+
+            MessageCli.ACTIVITY_CREATED.printMessage(activityName, activityID, operatorId);
+            return;
+  
+        }
+
       }
-    }
-
-    //need to make Activity id 
-    int activityCount = operator.getActivities().size();
-    String activityID = operator.getOpID() + "-" + String.format("%03d", activityCount);
-
-
-    Activity newActivity = new Activity(activityName, type, activityID);
-    operator.addActivity(newActivity.getName());
-
-    MessageCli.ACTIVITY_CREATED.printMessage(activityName, activityID, operatorId);
-
-
+      MessageCli.ACTIVITY_NOT_CREATED_INVALID_OPERATOR_ID.printMessage(operatorId);
+    } 
 
   }
 
