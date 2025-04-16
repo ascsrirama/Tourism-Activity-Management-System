@@ -27,6 +27,10 @@ public class Activity {
   public String getActivityID() {
     return activityID;
   }
+@Override
+  public String toString() {
+    return name;
+  }
 
   
 }

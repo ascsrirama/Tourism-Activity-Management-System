@@ -8,7 +8,7 @@ public class Operator {
  private String operatorName; 
  private Types.Location location;
  private String opID;
- private ArrayList<String> activities;
+ private ArrayList<Activity> activities;
  
 
   public Operator(String operatorName, Types.Location location, String opID){ 
@@ -32,12 +32,12 @@ public class Operator {
   } 
   
   
-  public void addActivity(String activity) {
+  public void addActivity(Activity activity) {
     activities.add(activity);
   }
   
   
-  public ArrayList<String> getActivities() {
+  public ArrayList<Activity> getActivities() {
     return activities;
   }
 
