@@ -187,7 +187,7 @@ ArrayList<Operator> operators = new ArrayList<>();
             Activity newActivity = new Activity(activityName, type, activityID);
             op.addActivity(newActivity.getName());
 
-            MessageCli.ACTIVITY_CREATED.printMessage(activityName, activityID, operatorId);
+            MessageCli.ACTIVITY_CREATED.printMessage(activityName, activityID, type.toString(),op.returnOperator());
             return;
   
         }
