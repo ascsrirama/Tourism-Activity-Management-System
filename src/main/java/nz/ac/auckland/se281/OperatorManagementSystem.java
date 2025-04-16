@@ -3,7 +3,7 @@ package nz.ac.auckland.se281;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+import nz.ac.auckland.se281.Types.ActivityType;
 import nz.ac.auckland.se281.Types.Location;
 
 public class OperatorManagementSystem {
@@ -141,7 +141,7 @@ ArrayList<Operator> operators = new ArrayList<>();
     for (Operator op : operators) { 
 
         if (op.getOpID().equals(operatorId)){
-          ArrayList<String> activities = op.getActivities();
+          ArrayList<Activity> activities = op.getActivities();
           
             if (activities.isEmpty()){
               MessageCli.ACTIVITIES_FOUND.printMessage("are", "no", "ies", ".");
@@ -155,8 +155,12 @@ ArrayList<Operator> operators = new ArrayList<>();
             MessageCli.ACTIVITIES_FOUND.printMessage(verb, String.valueOf(counter), plural, ending);
 
             //add the stars at the front
-            for (String activity : activities) {
-              System.out.println("  * " + activity); 
+            for (Activity activity : activities) {
+              // we  need the activity id 
+              ActivityType type = activity.getType();
+              String activityID = activity.getActivityID();
+              MessageCli.ACTIVITY_ENTRY.printMessage(activity.getName(), activityID, type.toString(), op.returnOperator());
+
             }
           }
             return;  
@@ -185,7 +189,7 @@ ArrayList<Operator> operators = new ArrayList<>();
 
 
             Activity newActivity = new Activity(activityName, type, activityID);
-            op.addActivity(newActivity.getName());
+            op.addActivity(newActivity);
 
             MessageCli.ACTIVITY_CREATED.printMessage(activityName, activityID, type.toString(),op.returnOperator());
             return;
