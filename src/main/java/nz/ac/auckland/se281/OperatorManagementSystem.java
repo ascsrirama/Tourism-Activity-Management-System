@@ -161,11 +161,11 @@ ArrayList<Operator> operators = new ArrayList<>();
               String activityID = activity.getActivityID();
               MessageCli.ACTIVITY_ENTRY.printMessage(activity.getName(), activityID, type.toString(), op.returnOperator());
 
+              }
             }
-          }
             return;  
-        } 
-    }
+          } 
+      }
 
     MessageCli.OPERATOR_NOT_FOUND.printMessage(operatorId);
     
@@ -203,7 +203,13 @@ ArrayList<Operator> operators = new ArrayList<>();
   }
 
   public void searchActivities(String keyword) {
-    // TODO implement
+    if (keyword.trim().equals("*")) {
+      MessageCli.ACTIVITIES_FOUND.printMessage("are", "no", "ies", ".");
+      return;
+    } 
+
+
+    
   }
 
   public void addPublicReview(String activityId, String[] options) {
