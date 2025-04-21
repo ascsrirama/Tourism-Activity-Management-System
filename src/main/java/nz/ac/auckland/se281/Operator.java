@@ -29,14 +29,12 @@ public class Operator {
 
   public Types.Location getLocation() {
     return this.location;
-  } 
-  
-  
+  }   
+ 
   public void addActivity(Activity activity) {
     activities.add(activity);
   }
-  
-  
+    
   public ArrayList<Activity> getActivities() {
     return activities;
   }
