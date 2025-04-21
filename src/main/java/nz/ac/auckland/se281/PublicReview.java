@@ -8,11 +8,11 @@ public class PublicReview extends Review {
       String author,
       String reviewId,
       int rating,
-      String comment,
+      String reviewText,
       boolean isAnonymous,
       boolean isEndorsed) {
 
-    super(author, reviewId, comment, rating);
+    super(author, reviewId, reviewText, rating);
     this.isAnonymous = isAnonymous;
     this.isEndorsed = false;
   }

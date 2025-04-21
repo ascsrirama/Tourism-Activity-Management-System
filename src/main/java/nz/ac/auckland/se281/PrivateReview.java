@@ -9,10 +9,10 @@ public class PrivateReview extends Review {
       String author,
       String reviewId,
       int rating,
-      String comment,
+      String reviewText,
       String email,
       boolean isFollowUpRequested) {
-    super(author, reviewId, comment, rating);
+    super(author, reviewId, reviewText, rating);
     this.email = email;
     this.isFollowUpRequested = isFollowUpRequested;
     this.operatorResponse = "-";

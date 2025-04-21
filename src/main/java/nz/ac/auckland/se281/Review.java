@@ -3,13 +3,13 @@ package nz.ac.auckland.se281;
 public abstract class Review {
   protected String author;
   protected String reviewId;
-  protected String comment;
+  protected String reviewText;
   protected int rating;
 
-  public Review(String author, String reviewId, String comment, int rating) {
+  public Review(String author, String reviewId, String reviewText, int rating) {
     this.author = author;
     this.reviewId = reviewId;
-    this.comment = comment;
+    this.reviewText = reviewText;
     this.rating = rating;
   }
 
