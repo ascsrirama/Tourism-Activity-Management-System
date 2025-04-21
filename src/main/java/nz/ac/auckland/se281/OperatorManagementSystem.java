@@ -249,12 +249,7 @@ ArrayList<Operator> operators = new ArrayList<>();
             String opLocation = op.getLocation().getFullName().toLowerCase();
 
               if (activityName.contains(keyword.toLowerCase().trim()) || activityType.contains(keyword.toLowerCase().trim()) || opLocation.contains(keyword.toLowerCase().trim())) {
-                
-                // String activityID = activity.getActivityID();
-                // String type = activity.getType().toString();
-                // String operatorName = op.returnOperator();
-                // MessageCli.ACTIVITY_ENTRY.printMessage(activity.getName(), activityID, type, operatorName); 
-                // totalCount++;
+                totalCount++; 
               } 
             }
           }
@@ -265,7 +260,7 @@ ArrayList<Operator> operators = new ArrayList<>();
           else {
 
             String verb = (totalCount == 1) ? "is" : "are";
-            String plural = (totalCount == 1) ? "" : "ies";
+            String plural = (totalCount == 1) ? "y" : "ies";
             MessageCli.ACTIVITIES_FOUND.printMessage(verb, String.valueOf(totalCount), plural, ":");
 
 
