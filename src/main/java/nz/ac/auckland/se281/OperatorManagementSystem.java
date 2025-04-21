@@ -6,7 +6,7 @@ import nz.ac.auckland.se281.Types.ActivityType;
 import nz.ac.auckland.se281.Types.Location;
 
 public class OperatorManagementSystem {
- private ArrayList<Operator> operators = new ArrayList<>();
+  private ArrayList<Operator> operators = new ArrayList<>();
 
   // Do not change the parameters of the constructor
 
@@ -291,7 +291,10 @@ public class OperatorManagementSystem {
   // SEARCH ACTIVITES ENDS HERE ==========================
 
   public void addPublicReview(String activityId, String[] options) {
-    // TODO implement
+    if (activityId == null) {
+      MessageCli.REVIEW_NOT_ADDED_INVALID_ACTIVITY_ID.printMessage(activityId);
+      return;
+    }
   }
 
   public void addPrivateReview(String activityId, String[] options) {
@@ -303,7 +306,21 @@ public class OperatorManagementSystem {
   }
 
   public void displayReviews(String activityId) {
-    // TODO implement
+    for (Operator op : operators) {
+      for (Activity activity : op.getActivities()) {
+        if (activity.getActivityID().equals(activityId)) {
+          ArrayList<Review> reviews = activity.getReviews();
+
+          if (reviews.isEmpty()) {
+            MessageCli.REVIEWS_FOUND.printMessage("are",  "no", "s", activity.getName());
+
+          } else {
+            MessageCli.REVIEWS_FOUND.printMessage(
+                "are", String.valueOf(reviews.size()), "s", activityId);
+          }
+        }
+      }
+    }
   }
 
   public void endorseReview(String reviewId) {

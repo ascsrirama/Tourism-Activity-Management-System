@@ -1,19 +1,17 @@
 package nz.ac.auckland.se281;
 
-
+import java.util.ArrayList;
 
 public class Activity {
   private String name;
-  private Types.ActivityType Type; 
+  private Types.ActivityType Type;
   private String activityID;
+  private ArrayList<Review> reviews = new ArrayList<Review>();
 
-
-  public Activity (String name,  Types.ActivityType Type, String activityID) {
+  public Activity(String name, Types.ActivityType Type, String activityID) {
     this.name = name;
-    this.Type = Type; 
+    this.Type = Type;
     this.activityID = activityID;
-    
-
   }
 
   public String getName() {
@@ -27,10 +25,17 @@ public class Activity {
   public String getActivityID() {
     return activityID;
   }
-@Override
+
+  public ArrayList<Review> getReviews() {
+    return reviews;
+  }
+
+  public void addReview(Review review) {
+    reviews.add(review);
+  }
+
+  @Override
   public String toString() {
     return name;
   }
-
-  
 }
