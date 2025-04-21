@@ -291,10 +291,38 @@ public class OperatorManagementSystem {
   // SEARCH ACTIVITES ENDS HERE ==========================
 
   public void addPublicReview(String activityId, String[] options) {
-    if (activityId == null) {
-      MessageCli.REVIEW_NOT_ADDED_INVALID_ACTIVITY_ID.printMessage(activityId);
-      return;
+    for (Operator op : operators) {
+      for (Activity activity : op.getActivities()) {
+        // check if the activity id is the same as the one we are looking for
+        if (activity.getActivityID().equals(activityId)) {
+          // if it is the same we need to add the review
+          String author = options[0];
+          boolean isAnonymous = options[1].equalsIgnoreCase("y");
+          int rating = Integer.parseInt(options[2]);
+          String comment = options[3];
+
+          // adjust the ratings
+          if (rating < 1) rating = 1;
+          if (rating > 5) rating = 5;
+
+          // generate reviewId
+          int reviewNumber = activity.getReviews().size() + 1;
+          String reviewId = activityId + "-R" + reviewNumber;
+
+          // create the review and add it
+          PublicReview review =
+              new PublicReview(author, reviewId, rating, comment, isAnonymous, false);
+          activity.addReview(review);
+
+          // message REVIEW_ADDED("%s review '%s' added successfully for activity '%s'."),
+          MessageCli.REVIEW_ADDED.printMessage(
+              "Public", reviewId, activity.getName(), activity.getActivityID());
+              return;
+        }
+      }
     }
+    // if the id is not found
+    MessageCli.REVIEW_NOT_ADDED_INVALID_ACTIVITY_ID.printMessage(activityId);
   }
 
   public void addPrivateReview(String activityId, String[] options) {
@@ -317,16 +345,17 @@ public class OperatorManagementSystem {
 
           // if there are no reviews
           if (reviews.isEmpty()) {
-            MessageCli.REVIEWS_FOUND.printMessage("are",  "no", "s", activity.getName());
+            MessageCli.REVIEWS_FOUND.printMessage("are", "no", "s", activity.getName());
 
           } else {
             // if there are reviews
             String verb = (reviews.size() == 1) ? "is" : "are";
             String plural = (reviews.size() == 1) ? "" : "s";
-            MessageCli.REVIEWS_FOUND.printMessage(verb, String.valueOf(reviews.size()), plural, activity.getName());
+            MessageCli.REVIEWS_FOUND.printMessage(
+                verb, String.valueOf(reviews.size()), plural, activity.getName());
 
             // Print out the reviews
-            for(Review review : reviews) {
+            for (Review review : reviews) {
               review.displayReview();
             }
           }
