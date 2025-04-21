@@ -10,10 +10,10 @@ public class ExpertReview extends Review {
       String author,
       String reviewId,
       int rating,
-      String comment,
+      String reviewText,
       boolean isRecommended,
       List<String> images) {
-    super(author, reviewId, comment, rating);
+    super(author, reviewId, reviewText, rating);
     this.isRecommended = isRecommended;
     this.images = images;
   }
