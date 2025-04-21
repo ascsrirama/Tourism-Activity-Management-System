@@ -379,8 +379,9 @@ public class OperatorManagementSystem {
           int reviewNumber = activity.getReviews().size() + 1;
           String reviewId = activityId + "-R" + reviewNumber;
 
-          // create the review and add it  
-          ExpertReview review = new ExpertReview(author, reviewId, rating, reviewText, isRecommended );
+          // create the review and add it
+          ExpertReview review =
+              new ExpertReview(author, reviewId, rating, reviewText, isRecommended);
           activity.addReview(review);
 
           // print out the message
