@@ -306,21 +306,37 @@ public class OperatorManagementSystem {
   }
 
   public void displayReviews(String activityId) {
+    // lets go thru the operators and find the activity id
+
     for (Operator op : operators) {
       for (Activity activity : op.getActivities()) {
+        // check if the activity id is the same as the one we are looking for
         if (activity.getActivityID().equals(activityId)) {
+          // if it is the same we need to get the reviews
           ArrayList<Review> reviews = activity.getReviews();
 
+          // if there are no reviews
           if (reviews.isEmpty()) {
             MessageCli.REVIEWS_FOUND.printMessage("are",  "no", "s", activity.getName());
 
           } else {
-            MessageCli.REVIEWS_FOUND.printMessage(
-                "are", String.valueOf(reviews.size()), "s", activityId);
+            // if there are reviews
+            String verb = (reviews.size() == 1) ? "is" : "are";
+            String plural = (reviews.size() == 1) ? "" : "s";
+            MessageCli.REVIEWS_FOUND.printMessage(verb, String.valueOf(reviews.size()), plural, activity.getName());
+
+            // Print out the reviews
+            for(Review review : reviews) {
+              review.displayReview();
+            }
           }
+          return;
         }
       }
     }
+
+    // if the id is not found
+    MessageCli.ACTIVITY_NOT_FOUND.printMessage(activityId);
   }
 
   public void endorseReview(String reviewId) {
