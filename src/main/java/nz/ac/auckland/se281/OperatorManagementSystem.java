@@ -297,9 +297,10 @@ public class OperatorManagementSystem {
         if (activity.getActivityID().equals(activityId)) {
           // if it is the same we need to add the review
           String author = options[0];
-          boolean isAnonymous = options[1].equalsIgnoreCase("y");
+          boolean isAnonymous =
+              options[1].equalsIgnoreCase("y") || options[1].equalsIgnoreCase("n");
           int rating = Integer.parseInt(options[2]);
-          String comment = options[3];
+          String reviewText = options[3];
 
           // adjust the ratings
           if (rating < 1) rating = 1;
@@ -311,13 +312,13 @@ public class OperatorManagementSystem {
 
           // create the review and add it
           PublicReview review =
-              new PublicReview(author, reviewId, rating, comment, isAnonymous, false);
+              new PublicReview(author, reviewId, rating, reviewText, isAnonymous, false);
           activity.addReview(review);
 
           // message REVIEW_ADDED("%s review '%s' added successfully for activity '%s'."),
           MessageCli.REVIEW_ADDED.printMessage(
               "Public", reviewId, activity.getName(), activity.getActivityID());
-              return;
+          return;
         }
       }
     }
@@ -326,11 +327,70 @@ public class OperatorManagementSystem {
   }
 
   public void addPrivateReview(String activityId, String[] options) {
-    // TODO implement
+    for (Operator op : operators) {
+      for (Activity activity : op.getActivities()) {
+        if (activity.getActivityID().equals(activityId)) {
+          // if it is the same we need to add the review
+          String author = options[0];
+          String email = options[1];
+          int rating = Integer.parseInt(options[2]);
+          String reviewtText = options[3];
+          boolean isFollowUpRequested =
+              options[4].equalsIgnoreCase("y") || options[4].equalsIgnoreCase("n");
+
+          // adjust the ratings
+          if (rating < 1) rating = 1;
+          if (rating > 5) rating = 5;
+          // generate reviewId
+          int reviewNumber = activity.getReviews().size() + 1;
+          String reviewId = activityId + "-R" + reviewNumber;
+
+          // create the review and add it
+          PrivateReview review =
+              new PrivateReview(author, reviewId, rating, reviewtText, email, isFollowUpRequested);
+          activity.addReview(review);
+
+          // print out the message
+          MessageCli.REVIEW_ADDED.printMessage(
+              "Private", reviewId, activity.getName(), activity.getActivityID());
+          return;
+        }
+      }
+    }
+    MessageCli.REVIEW_NOT_ADDED_INVALID_ACTIVITY_ID.printMessage(activityId);
   }
 
   public void addExpertReview(String activityId, String[] options) {
-    // TODO implement
+    for (Operator op : operators) {
+      for (Activity activity : op.getActivities()) {
+        if (activity.getActivityID().equals(activityId)) {
+          // if it is the same we need to add the review
+          String author = options[0];
+          int rating = Integer.parseInt(options[1]);
+          String reviewText = options[2];
+          boolean isRecommended =
+              options[3].equalsIgnoreCase("y") || options[3].equalsIgnoreCase("n");
+
+          // adjust the ratings
+          if (rating < 1) rating = 1;
+          if (rating > 5) rating = 5;
+
+          // generate reviewId
+          int reviewNumber = activity.getReviews().size() + 1;
+          String reviewId = activityId + "-R" + reviewNumber;
+
+          // create the review and add it  
+          ExpertReview review = new ExpertReview(author, reviewId, rating, reviewText, isRecommended );
+          activity.addReview(review);
+
+          // print out the message
+          MessageCli.REVIEW_ADDED.printMessage(
+              "Expert", reviewId, activity.getName(), activity.getActivityID());
+          return;
+        }
+      }
+    }
+    MessageCli.REVIEW_NOT_ADDED_INVALID_ACTIVITY_ID.printMessage(activityId);
   }
 
   public void displayReviews(String activityId) {
