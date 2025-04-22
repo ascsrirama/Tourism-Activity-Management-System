@@ -484,7 +484,7 @@ public class OperatorManagementSystem {
               ((ExpertReview) review).addImage(imageName);
               MessageCli.REVIEW_IMAGE_ADDED.printMessage(imageName, reviewId);
             } else {
-              MessageCli.REVIEW_IMAGE_NOT_ADDED_NOT_EXPERT.printMessage(imageName, reviewId);
+              MessageCli.REVIEW_IMAGE_NOT_ADDED_NOT_EXPERT.printMessage(reviewId);
             }
             return;
           }

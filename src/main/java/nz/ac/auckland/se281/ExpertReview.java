@@ -11,7 +11,7 @@ public class ExpertReview extends Review {
       String author, String reviewId, int rating, String reviewText, boolean isRecommended) {
     super(author, reviewId, reviewText, rating);
     this.isRecommended = isRecommended;
-     this.images = new ArrayList<String>();
+    this.images = new ArrayList<String>();
   }
 
   public void addImage(String imageName) {
@@ -37,6 +37,15 @@ public class ExpertReview extends Review {
     MessageCli.REVIEW_ENTRY_REVIEW_TEXT.printMessage(reviewText);
     if (isRecommended) {
       MessageCli.REVIEW_ENTRY_RECOMMENDED.printMessage("Recommended");
+    }
+
+    if (!images.isEmpty()) {
+      // for (String image : images) {
+      //   MessageCli.REVIEW_ENTRY_IMAGES.printMessage(image);
+      // }
+
+      String imageList = String.join(",", images);
+      MessageCli.REVIEW_ENTRY_IMAGES.printMessage(imageList);
     }
   }
 }
