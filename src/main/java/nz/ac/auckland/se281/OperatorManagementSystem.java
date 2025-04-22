@@ -366,8 +366,7 @@ public class OperatorManagementSystem {
           String author = options[0];
           int rating = Integer.parseInt(options[1]);
           String reviewText = options[2];
-          boolean isRecommended =
-              options[3].equalsIgnoreCase("y");
+          boolean isRecommended = options[3].equalsIgnoreCase("y");
 
           // adjust the ratings
           if (rating < 1) rating = 1;
@@ -430,11 +429,50 @@ public class OperatorManagementSystem {
 
   // DISPLAY REVIEWS ENDS HERE =========================
   public void endorseReview(String reviewId) {
-    // TODO implement
+    // we need to add endoresment to th epublic review
+    for (Operator op : operators) {
+      for (Activity activity : op.getActivities()) {
+        for (Review review : activity.getReviews()) {
+          if (review.getReviewId().equals(reviewId)) {
+            if (review instanceof PublicReview) {
+              ((PublicReview) review).setEndorsed(true);
+              MessageCli.REVIEW_ENDORSED.printMessage(reviewId);
+            } else {
+              MessageCli.REVIEW_NOT_ENDORSED.printMessage(reviewId);
+            }
+            return;
+          }
+        }
+      }
+    }
+    // if the id is not found
+    MessageCli.REVIEW_NOT_FOUND.printMessage(reviewId);
   }
 
   public void resolveReview(String reviewId, String response) {
-    // TODO implement
+    for (Operator op : operators) {
+      for (Activity activity : op.getActivities()) {
+        for (Review review : activity.getReviews()) {
+          if (review.getReviewId().equals(reviewId)) {
+            if (review instanceof PrivateReview) {
+              if (response == null || response.isEmpty()) {
+                MessageCli.REVIEW_NOT_RESOLVED.printMessage(reviewId);
+                return;
+              }
+
+              PrivateReview privateReview = (PrivateReview) review;
+              privateReview.setOperatorResponse(response);
+              MessageCli.REVIEW_RESOLVED.printMessage(reviewId);
+              return;
+            }
+            MessageCli.REVIEW_NOT_RESOLVED.printMessage(reviewId);
+            return;
+          }
+        }
+      }
+    }
+    // if the id is not found
+    MessageCli.REVIEW_NOT_FOUND.printMessage(reviewId);
   }
 
   public void uploadReviewImage(String reviewId, String imageName) {

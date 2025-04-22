@@ -5,6 +5,20 @@ public class PrivateReview extends Review {
   private boolean isFollowUpRequested;
   private String operatorResponse;
 
+  // public PrivateReview(
+  //     String author,
+  //     String reviewId,
+  //     int rating,
+  //     String reviewText,
+  //     String email,
+  //     boolean isFollowUpRequested) {
+  //   super(author, reviewId, reviewText, rating);
+  //   this.email = email;
+  //   this.isFollowUpRequested = isFollowUpRequested;
+  //   this.operatorResponse = null;
+  // }
+  
+
   public PrivateReview(
       String author,
       String reviewId,
@@ -15,8 +29,15 @@ public class PrivateReview extends Review {
     super(author, reviewId, reviewText, rating);
     this.email = email;
     this.isFollowUpRequested = isFollowUpRequested;
-    this.operatorResponse = "-";
+    // this.operatorResponse = null;
+
+    if (!isFollowUpRequested) {
+      this.operatorResponse = "-";
+    } else {
+      this.operatorResponse = null;
+    }
   }
+
 
   // Getters and Setters
   public String getEmail() {
@@ -50,10 +71,40 @@ public class PrivateReview extends Review {
     MessageCli.REVIEW_ENTRY_REVIEW_TEXT.printMessage(reviewText);
 
 
-    if (isFollowUpRequested) {
-      MessageCli.REVIEW_ENTRY_FOLLOW_UP.printMessage(email);
-    } else { 
-      MessageCli.REVIEW_ENTRY_RESOLVED.printMessage(operatorResponse);
-    }
-  }
+    // if (isFollowUpRequested &&(operatorResponse == null || operatorResponse.isEmpty())) {
+    //   MessageCli.REVIEW_ENTRY_FOLLOW_UP.printMessage(email);
+    // } else if (operatorResponse != null && !operatorResponse.isEmpty()) {
+    //   MessageCli.REVIEW_RESOLVED.printMessage(operatorResponse);
+    // }
+
+    // if (isFollowUpRequested && (operatorResponse == null || operatorResponse.isEmpty())) {
+    //   MessageCli.REVIEW_ENTRY_FOLLOW_UP.printMessage(email);
+  // } 
+
+  // // If there is an operator response, print it
+  // else if (operatorResponse != null && !operatorResponse.isEmpty()) {
+  //     MessageCli.REVIEW_RESOLVED.printMessage(operatorResponse);
+  // } 
+  // // If no response is given, display "Resolved: \"-\""
+  // else {
+  //     MessageCli.REVIEW_RESOLVED.printMessage("Resolved: \"-\"");
+  // }
+  //}
+
+// If follow-up is requested and no response, display email.
+if (isFollowUpRequested && (operatorResponse == null || operatorResponse.isEmpty())) {
+  MessageCli.REVIEW_ENTRY_FOLLOW_UP.printMessage(email);
 }
+// If there's an operator response or if it's been marked as resolved (operatorResponse = "-")
+else {
+  MessageCli.REVIEW_RESOLVED.printMessage("Resolved: \"" + operatorResponse + "\"");
+}
+
+
+
+}
+
+}
+
+
+
