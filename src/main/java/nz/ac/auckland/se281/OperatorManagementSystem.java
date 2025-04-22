@@ -297,8 +297,7 @@ public class OperatorManagementSystem {
         if (activity.getActivityID().equals(activityId)) {
           // if it is the same we need to add the review
           String author = options[0];
-          boolean isAnonymous =
-              options[1].equalsIgnoreCase("y") || options[1].equalsIgnoreCase("n");
+          boolean isAnonymous = options[1].equalsIgnoreCase("y");
           int rating = Integer.parseInt(options[2]);
           String reviewText = options[3];
 
@@ -394,8 +393,7 @@ public class OperatorManagementSystem {
     MessageCli.REVIEW_NOT_ADDED_INVALID_ACTIVITY_ID.printMessage(activityId);
   }
 
-
-  // DSIPLAY REVIEWS STARTS HERE =========================	
+  // DSIPLAY REVIEWS STARTS HERE =========================
   public void displayReviews(String activityId) {
     // lets go thru the operators and find the activity id
 

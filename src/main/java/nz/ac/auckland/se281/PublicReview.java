@@ -35,7 +35,8 @@ public class PublicReview extends Review {
 
   @Override
   public void displayReview() {
-    MessageCli.REVIEW_ENTRY_HEADER.printMessage(String.valueOf(rating),"5", "Public", reviewId, author);
+    String displayName = isAnonymous ? "Anonymous" : author;
+    MessageCli.REVIEW_ENTRY_HEADER.printMessage(String.valueOf(rating),"5", "Public", reviewId, displayName);
     MessageCli.REVIEW_ENTRY_REVIEW_TEXT.printMessage(reviewText);
   }
 }
