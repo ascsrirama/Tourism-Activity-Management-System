@@ -367,7 +367,7 @@ public class OperatorManagementSystem {
           int rating = Integer.parseInt(options[1]);
           String reviewText = options[2];
           boolean isRecommended =
-              options[3].equalsIgnoreCase("y") || options[3].equalsIgnoreCase("n");
+              options[3].equalsIgnoreCase("y");
 
           // adjust the ratings
           if (rating < 1) rating = 1;

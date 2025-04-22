@@ -1,21 +1,16 @@
 package nz.ac.auckland.se281;
 
-import java.util.List;
 
 public class ExpertReview extends Review {
   private boolean isRecommended;
-  //private List<String> images;
+
+  // private List<String> images;
 
   public ExpertReview(
-      String author,
-      String reviewId,
-      int rating,
-      String reviewText,
-      boolean isRecommended
-      ) {
+      String author, String reviewId, int rating, String reviewText, boolean isRecommended) {
     super(author, reviewId, reviewText, rating);
     this.isRecommended = isRecommended;
-    //this.images = images;
+    // this.images = images;
   }
 
   public boolean isRecommended() {
@@ -26,14 +21,13 @@ public class ExpertReview extends Review {
     this.isRecommended = isRecommended;
   }
 
-  // public List<String> getImages() {
-  //   return images;
-  // }
-
-  // public void setImages(List<String> images) {
-  //   this.images = images;
-  // }
-
   @Override
-  public void displayReview() {}
+  public void displayReview() {
+    MessageCli.REVIEW_ENTRY_HEADER.printMessage(
+        String.valueOf(rating), "5", "Expert", reviewId, author);
+    MessageCli.REVIEW_ENTRY_REVIEW_TEXT.printMessage(reviewText);
+    if (isRecommended) {
+      MessageCli.REVIEW_ENTRY_RECOMMENDED.printMessage("Recommended");
+    }
+  }
 }
