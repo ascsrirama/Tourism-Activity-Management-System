@@ -34,5 +34,8 @@ public class PublicReview extends Review {
   }
 
   @Override
-  public void displayReview() {}
+  public void displayReview() {
+    MessageCli.REVIEW_ENTRY_HEADER.printMessage(String.valueOf(rating),"5", "Public", reviewId, author);
+    MessageCli.REVIEW_ENTRY_REVIEW_TEXT.printMessage(reviewText);
+  }
 }

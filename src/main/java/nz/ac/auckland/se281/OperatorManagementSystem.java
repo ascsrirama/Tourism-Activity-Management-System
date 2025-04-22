@@ -394,6 +394,8 @@ public class OperatorManagementSystem {
     MessageCli.REVIEW_NOT_ADDED_INVALID_ACTIVITY_ID.printMessage(activityId);
   }
 
+
+  // DSIPLAY REVIEWS STARTS HERE =========================	
   public void displayReviews(String activityId) {
     // lets go thru the operators and find the activity id
 
@@ -429,6 +431,7 @@ public class OperatorManagementSystem {
     MessageCli.ACTIVITY_NOT_FOUND.printMessage(activityId);
   }
 
+  // DISPLAY REVIEWS ENDS HERE =========================
   public void endorseReview(String reviewId) {
     // TODO implement
   }
