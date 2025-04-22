@@ -476,7 +476,23 @@ public class OperatorManagementSystem {
   }
 
   public void uploadReviewImage(String reviewId, String imageName) {
-    // TODO implement
+    for (Operator op : operators) {
+      for (Activity activity : op.getActivities()) {
+        for (Review review : activity.getReviews()) {
+          if (review.getReviewId().equals(reviewId)) {
+            if (review instanceof ExpertReview) {
+              ((ExpertReview) review).addImage(imageName);
+              MessageCli.REVIEW_IMAGE_ADDED.printMessage(imageName, reviewId);
+            } else {
+              MessageCli.REVIEW_IMAGE_NOT_ADDED_NOT_EXPERT.printMessage(imageName, reviewId);
+            }
+            return;
+          }
+        }
+      }
+    }
+    // if the id is not found
+    MessageCli.REVIEW_NOT_FOUND.printMessage(reviewId);
   }
 
   public void displayTopActivities() {
