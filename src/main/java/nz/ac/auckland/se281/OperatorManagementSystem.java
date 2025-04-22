@@ -496,6 +496,58 @@ public class OperatorManagementSystem {
   }
 
   public void displayTopActivities() {
-    // TODO implement
+    // we need to show the top activity in each location based on the average review of public and
+    // extpert reviews
+
+    ArrayList<Location> locationList = new ArrayList<>();
+
+    // Collect unique locations
+    for (Operator op : operators) {
+      Location location = op.getLocation();
+      if (!locationList.contains(location)) {
+        locationList.add(location);
+      }
+    }
+
+    for (Location loc : locationList) {
+      Activity topActivity = null;
+      double highestAverage = -1;
+
+      for (Operator op : operators) {
+        if (!op.getLocation().equals(loc)) continue;
+
+        for (Activity activity : op.getActivities()) {
+          int totalRating = 0;
+          int count = 0;
+
+          for (Review review : activity.getReviews()) {
+            if (review instanceof PublicReview || review instanceof ExpertReview) {
+              totalRating += review.getRating();
+              
+              count++;
+            }
+          }
+
+          if (count > 0) {
+            double average = (double) totalRating / count;
+
+            if (average > highestAverage
+                || (average == highestAverage
+                    && activity.getName().compareTo(topActivity.getName()) < 0)) {
+              highestAverage = average;
+              topActivity = activity;
+            }
+          }
+        }
+      }
+
+      if (topActivity == null) {
+        MessageCli.NO_REVIEWED_ACTIVITIES.printMessage(loc.getFullName());
+      } else {
+        System.out.printf(
+            MessageCli.TOP_ACTIVITY.getMessage(
+                loc.getFullName(), topActivity.getName(), String.format("%.2f", highestAverage)));
+      }
+    }
   }
 }

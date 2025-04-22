@@ -17,5 +17,9 @@ public abstract class Review {
     return reviewId;
   }
 
+  public int getRating() {
+    return rating;
+  }
+
   public abstract void displayReview();
 }
