@@ -523,7 +523,7 @@ public class OperatorManagementSystem {
           for (Review review : activity.getReviews()) {
             if (review instanceof PublicReview || review instanceof ExpertReview) {
               totalRating += review.getRating();
-              
+
               count++;
             }
           }
