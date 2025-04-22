@@ -334,8 +334,7 @@ public class OperatorManagementSystem {
           String email = options[1];
           int rating = Integer.parseInt(options[2]);
           String reviewtText = options[3];
-          boolean isFollowUpRequested =
-              options[4].equalsIgnoreCase("y") || options[4].equalsIgnoreCase("n");
+          boolean isFollowUpRequested = options[4].equalsIgnoreCase("y");
 
           // adjust the ratings
           if (rating < 1) rating = 1;

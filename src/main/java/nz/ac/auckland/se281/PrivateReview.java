@@ -44,5 +44,16 @@ public class PrivateReview extends Review {
   }
 
   @Override
-  public void displayReview() {}
+  public void displayReview() {
+    
+    MessageCli.REVIEW_ENTRY_HEADER.printMessage(String.valueOf(rating),"5", "Private", reviewId, author);
+    MessageCli.REVIEW_ENTRY_REVIEW_TEXT.printMessage(reviewText);
+
+
+    if (isFollowUpRequested) {
+      MessageCli.REVIEW_ENTRY_FOLLOW_UP.printMessage(email);
+    } else { 
+      MessageCli.REVIEW_ENTRY_RESOLVED.printMessage(operatorResponse);
+    }
+  }
 }
