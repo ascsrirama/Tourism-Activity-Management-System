@@ -15,8 +15,8 @@ public class PrivateReview extends Review {
     super(author, reviewId, reviewText, rating);
     this.email = email;
     this.isFollowUpRequested = isFollowUpRequested;
-    // this.operatorResponse = null;
 
+    // If follow-up is not requested, set operatorResponse to "-". Otherwise, set it to null.
     if (!isFollowUpRequested) {
       this.operatorResponse = "-";
     } else {

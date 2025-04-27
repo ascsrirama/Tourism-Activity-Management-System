@@ -21,7 +21,7 @@ public class OperatorManagementSystem {
       return;
     }
 
-    HashMap<String, Integer> op_per_location = new HashMap<>();
+    HashMap<String, Integer> opPerLocation = new HashMap<>();
 
     // If keyword is "*", display all operators
     if (keyword.trim().equals("*")) {
@@ -35,11 +35,11 @@ public class OperatorManagementSystem {
 
       // Print each operator's information
       for (Operator op : operators) {
-        printOperator(op, op_per_location);
+        printOperator(op, opPerLocation);
       }
     } else {
       // For non-"*" keyword searches
-      ArrayList<Operator> MATCHING = new ArrayList<>();
+      ArrayList<Operator> matching = new ArrayList<>();
 
       for (Operator op : operators) {
         String operatorName = op.returnOperator().toLowerCase();
@@ -52,11 +52,11 @@ public class OperatorManagementSystem {
             || locationTeReo.contains(keyword.toLowerCase().trim())
             || locationAbbr.contains(keyword.toLowerCase().trim())
             || operatorName.contains(keyword.toLowerCase().trim())) {
-          MATCHING.add(op);
+          matching.add(op);
         }
       }
 
-      int matchingCount = MATCHING.size();
+      int matchingCount = matching.size();
       if (matchingCount == 0) {
         MessageCli.OPERATORS_FOUND.printMessage("There are no matching operators found.");
       } else {
@@ -67,8 +67,8 @@ public class OperatorManagementSystem {
         String ending = (matchingCount == 0) ? "." : ":";
         MessageCli.OPERATORS_FOUND.printMessage(
             verb, String.valueOf(matchingCount), plural, ending);
-        for (Operator op : MATCHING) {
-          printOperator(op, op_per_location);
+        for (Operator op : matching) {
+          printOperator(op, opPerLocation);
         }
       }
     }
@@ -77,7 +77,7 @@ public class OperatorManagementSystem {
   // END OF SEARCH OPERATORS//
 
   // This method will make life easier
-  private void printOperator(Operator op, HashMap<String, Integer> op_per_location) {
+  private void printOperator(Operator op, HashMap<String, Integer> opPerLocation) {
     String location = op.getLocation().getFullName();
     String operatorName = op.returnOperator();
     // String locationAbbr = op.getLocation().getLocationAbbreviation();
@@ -118,8 +118,8 @@ public class OperatorManagementSystem {
 
       // ===== 3digit number maker =====
       int count = 1;
-      for (Operator op_existing : operators) {
-        if (op_existing.getLocation().equals(locationFound)) {
+      for (Operator opExisisting : operators) {
+        if (opExisisting.getLocation().equals(locationFound)) {
           count++;
         }
       }
@@ -162,9 +162,9 @@ public class OperatorManagementSystem {
           for (Activity activity : activities) {
             // we  need the activity id
             ActivityType type = activity.getType();
-            String activityID = activity.getactivityId();
+            String activityId = activity.getactivityId();
             MessageCli.ACTIVITY_ENTRY.printMessage(
-                activity.getName(), activityID, type.toString(), op.returnOperator());
+                activity.getName(), activityId, type.toString(), op.returnOperator());
           }
         }
         return;
@@ -189,13 +189,13 @@ public class OperatorManagementSystem {
         if (op.getopId().equals(operatorId)) {
           // need to make Activity id
           int activityCount = op.getActivities().size() + 1;
-          String activityID = op.getopId() + "-" + String.format("%03d", activityCount);
+          String activityId = op.getopId() + "-" + String.format("%03d", activityCount);
 
-          Activity newActivity = new Activity(activityName, type, activityID);
+          Activity newActivity = new Activity(activityName, type, activityId);
           op.addActivity(newActivity);
 
           MessageCli.ACTIVITY_CREATED.printMessage(
-              activityName, activityID, type.toString(), op.returnOperator());
+              activityName, activityId, type.toString(), op.returnOperator());
           return;
         }
       }
@@ -226,13 +226,13 @@ public class OperatorManagementSystem {
         for (Operator op : operators) {
           ArrayList<Activity> activities = op.getActivities();
           for (Activity activity : activities) {
-            String activityID = activity.getactivityId();
+            String activityId = activity.getactivityId();
             String type = activity.getType().toString();
             String operatorName = op.returnOperator();
 
             // Print out the message with activity name, id, type and operator name
             MessageCli.ACTIVITY_ENTRY.printMessage(
-                activity.getName(), activityID, type, operatorName);
+                activity.getName(), activityId, type, operatorName);
           }
         }
       }
@@ -276,11 +276,11 @@ public class OperatorManagementSystem {
             if (activityName.contains(keyword.toLowerCase().trim())
                 || activityType.contains(keyword.toLowerCase().trim())
                 || opLocation.contains(keyword.toLowerCase().trim())) {
-              String activityID = activity.getactivityId();
+              String activityId = activity.getactivityId();
               String type = activity.getType().toString();
               String operatorName = op.returnOperator();
               MessageCli.ACTIVITY_ENTRY.printMessage(
-                  activity.getName(), activityID, type, operatorName);
+                  activity.getName(), activityId, type, operatorName);
             }
           }
         }
@@ -302,8 +302,12 @@ public class OperatorManagementSystem {
           String reviewText = options[3];
 
           // adjust the ratings
-          if (rating < 1) rating = 1;
-          if (rating > 5) rating = 5;
+          if (rating < 1) {
+            rating = 1;
+          }
+          if (rating > 5) {
+            rating = 5;
+          }
 
           // generate reviewId
           int reviewNumber = activity.getReviews().size() + 1;
@@ -337,8 +341,13 @@ public class OperatorManagementSystem {
           boolean isFollowUpRequested = options[4].equalsIgnoreCase("y");
 
           // adjust the ratings
-          if (rating < 1) rating = 1;
-          if (rating > 5) rating = 5;
+          if (rating < 1) {
+            rating = 1;
+          }
+          if (rating > 5) {
+            rating = 5;
+          }
+
           // generate reviewId
           int reviewNumber = activity.getReviews().size() + 1;
           String reviewId = activityId + "-R" + reviewNumber;
@@ -369,8 +378,12 @@ public class OperatorManagementSystem {
           boolean isRecommended = options[3].equalsIgnoreCase("y");
 
           // adjust the ratings
-          if (rating < 1) rating = 1;
-          if (rating > 5) rating = 5;
+          if (rating < 1) {
+            rating = 1;
+          }
+          if (rating > 5) {
+            rating = 5;
+          }
 
           // generate reviewId
           int reviewNumber = activity.getReviews().size() + 1;
@@ -508,13 +521,13 @@ public class OperatorManagementSystem {
         locationList.add(location);
       }
     }
-    // Lets go thru the locationList
-    for (Location loc : locationList) {
+    // Lets go thru the locationList to find the top activity
+    for (Location place : locationList) {
       Activity topActivity = null;
       double highestAverage = -1;
 
       for (Operator op : operators) {
-        if (!op.getLocation().equals(loc)) continue;
+        if (!op.getLocation().equals(place)) continue;
 
         for (Activity activity : op.getActivities()) {
           int totalRating = 0;
@@ -542,12 +555,12 @@ public class OperatorManagementSystem {
       }
       // If theres nothing then show the message
       if (topActivity == null) {
-        MessageCli.NO_REVIEWED_ACTIVITIES.printMessage(loc.getFullName());
+        MessageCli.NO_REVIEWED_ACTIVITIES.printMessage(place.getFullName());
       } else {
         // Print the top activity for the location
         System.out.printf(
             MessageCli.TOP_ACTIVITY.getMessage(
-                loc.getFullName(), topActivity.getName(), String.format("%.2f", highestAverage)));
+                place.getFullName(), topActivity.getName(), String.format("%.2f", highestAverage)));
       }
     }
   }
