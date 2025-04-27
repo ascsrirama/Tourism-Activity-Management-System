@@ -1,4 +1,3 @@
-
 package nz.ac.auckland.se281;
 
 import static nz.ac.auckland.se281.Main.Command.*;
@@ -18,7 +17,7 @@ import org.junit.runners.Suite.SuiteClasses;
   MainTest.Task1.class,
   MainTest.Task2.class,
   MainTest.Task3.class,
-  // MainTest.YourTests.class, // Uncomment this line to run your own tests
+  MainTest.YourTests.class, // Uncomment this line to run your own tests
 })
 public class MainTest {
 
@@ -295,7 +294,6 @@ public class MainTest {
         super(Main.class);
       }
     }
-    
   }
 
   @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -970,15 +968,296 @@ public class MainTest {
 
     @Test
     public void T4_01_add_your_own_tests_as_needed() throws Exception {
-
-
-
-
-
-
-
+      runCommands(
+          CREATE_OPERATOR,
+          "'West Auckland Camel Treks'",
+          "'AKL'",
+          CREATE_ACTIVITY,
+          "'Bethells Beach Camel Trek'",
+          "Adventure",
+          "WACT-AKL-001",
+          ADD_PRIVATE_REVIEW,
+          "WACT-AKL-001-001",
+          options("Alice", "alice@mail.com", "3", "Could be better", "y"),
+          ENDORSE_REVIEW,
+          "WACT-AKL-001-001-R1",
+          EXIT);
+      assertContains("Review not endorsed: 'WACT-AKL-001-001-R1' is not a public review.");
+      assertDoesNotContain("Review 'WACT-AKL-001-001-R1' endorsed successfully.");
     }
-    
+
+    // test that the review being endorsed is a public review
+    @Test
+    public void T3_XX_endorse_review_not_public() throws Exception {
+      runCommands(
+          CREATE_OPERATOR,
+          "'West Auckland Camel Treks'",
+          "'AKL'",
+          CREATE_ACTIVITY,
+          "'Bethells Beach Camel Trek'",
+          "Adventure",
+          "WACT-AKL-001",
+          ADD_PRIVATE_REVIEW,
+          "WACT-AKL-001-001",
+          options("Alice", "alice@mail.com", "3", "Could be better", "y"),
+          ENDORSE_REVIEW,
+          "WACT-AKL-001-001-R1",
+          EXIT);
+      assertContains("Review not endorsed: 'WACT-AKL-001-001-R1' is not a public review.");
+      assertDoesNotContain("Review 'WACT-AKL-001-001-R1' endorsed successfully.");
+    }
+
+    // test that the correct error is printed when trying to endorse a non-existent review
+    @Test
+    public void T3_XX_endorse_review_not_found() throws Exception {
+      runCommands(
+          CREATE_OPERATOR,
+          "'West Auckland Camel Treks'",
+          "'AKL'",
+          CREATE_ACTIVITY,
+          "'Bethells Beach Camel Trek'",
+          "Adventure",
+          "'WACT-AKL-001'",
+          ADD_PUBLIC_REVIEW,
+          "WACT-AKL-001-001",
+          options("Alice", "n", "3", "Could be better"),
+          ENDORSE_REVIEW,
+          "WACT-AKL-001-001-R2",
+          EXIT);
+      assertContains("Review not found: 'WACT-AKL-001-001-R2' is an invalid review ID.");
+      assertDoesNotContain("Review 'WACT-AKL-001-001-R2' endorsed successfully.");
+    }
+
+    // test that private reviews that require a follow-up print the required message
+    @Test
+    public void T3_04_add_private_review_followup() throws Exception {
+      runCommands(
+          CREATE_OPERATOR,
+          "'West Auckland Camel Treks'",
+          "'AKL'",
+          CREATE_ACTIVITY,
+          "'Bethells Beach Camel Trek'",
+          "Adventure",
+          "'WACT-AKL-001'",
+          ADD_PRIVATE_REVIEW,
+          "WACT-AKL-001-001",
+          options("Alice", "alice@mail.com", "3", "Could be better", "y"),
+          DISPLAY_REVIEWS,
+          "WACT-AKL-001-001",
+          EXIT);
+      assertContains("[3/5] Private review (WACT-AKL-001-001-R1) by 'Alice'");
+      assertContains("Need to email 'alice@mail.com' for follow-up.");
+      // see #390 to see why the below cannot be in the output
+      // https://edstem.org/au/courses/19942/discussion/2587468
+      assertDoesNotContain("Need to email 'felicia@email.com' for follow-up.");
+      assertDoesNotContain("Resolved: \"-\"");
+    }
+
+    // test that the review being resolved on is a private review
+    @Test
+    public void T3_XX_resolve_review_not_private() throws Exception {
+      runCommands(
+          CREATE_OPERATOR,
+          "'West Auckland Camel Treks'",
+          "'AKL'",
+          CREATE_ACTIVITY,
+          "'Bethells Beach Camel Trek'",
+          "Adventure",
+          "'WACT-AKL-001'",
+          ADD_PUBLIC_REVIEW,
+          "WACT-AKL-001-001",
+          options("Alice", "n", "3", "Could be better"),
+          RESOLVE_REVIEW,
+          "WACT-AKL-001-001-R1",
+          "'So sorry to hear that!'",
+          EXIT);
+      assertContains("Review not resolved: 'WACT-AKL-001-001-R1' is not a private review.");
+      assertDoesNotContain("Review 'WACT-AKL-001-001-R1' resolved successfully.");
+    }
+
+    // test that when an expert review does not recommend the activity, it doesn't state otherwise
+    @Test
+    public void T3_XX_expert_review_not_recommend() throws Exception {
+      runCommands(
+          CREATE_OPERATOR,
+          "'West Auckland Camel Treks'",
+          "'AKL'",
+          CREATE_ACTIVITY,
+          "'Bethells Beach Camel Trek'",
+          "Adventure",
+          "'WACT-AKL-001'",
+          ADD_EXPERT_REVIEW,
+          "WACT-AKL-001-001",
+          options("Alice", "3", "Could be better", "n"),
+          DISPLAY_REVIEWS,
+          "WACT-AKL-001-001",
+          EXIT);
+      assertContains("[3/5] Expert review (WACT-AKL-001-001-R1) by 'Alice'");
+      assertDoesNotContain("Recommended by experts.");
+    }
+
+    // test whether the review the image is being uploaded to is an expert review
+    @Test
+    public void T3_XX_upload_review_image_not_expert() throws Exception {
+      runCommands(
+          CREATE_OPERATOR,
+          "'West Auckland Camel Treks'",
+          "'AKL'",
+          CREATE_ACTIVITY,
+          "'Bethells Beach Camel Trek'",
+          "Adventure",
+          "'WACT-AKL-001'",
+          ADD_PUBLIC_REVIEW,
+          "WACT-AKL-001-001",
+          options("Alice", "n", "3", "Could be better"),
+          UPLOAD_REVIEW_IMAGE,
+          "WACT-AKL-001-001-R1",
+          "'image.png'",
+          EXIT);
+      assertContains("Image not uploaded: 'WACT-AKL-001-001-R1' is not an expert review.");
+      assertDoesNotContain(
+          "Image 'image.png' uploaded successfully for review 'WACT-AKL-001-001-R1'.");
+    }
+
+    // test if private and expert reviews check if the activity ID is valid
+    @Test
+    public void T3_XX_add_review_activity_id_invalid() throws Exception {
+      runCommands(
+          ADD_PRIVATE_REVIEW,
+          "WACT-AKL-001-001",
+          options("Felicia", "felicia@email.com", "5", "Great", "n"),
+          ADD_EXPERT_REVIEW,
+          "WACT-AKL-001-001",
+          options("Eve", "4", "Good", "y"),
+          EXIT);
+      assertContains("Review not added: 'WACT-AKL-001-001' is an invalid activity ID.");
+      assertDoesNotContain("Successfully created private review", true);
+      assertDoesNotContain("Successfully created expert review", true);
+    }
+
+    // test if the activity ID is valid when displaying reviews
+    @Test
+    public void T3_XX_display_reviews_activity_id_invalid() throws Exception {
+      runCommands(DISPLAY_REVIEWS, "WACT-AKL-001-001", EXIT);
+      assertContains("Activity not found: 'WACT-AKL-001-001' is an invalid activity ID.");
+      assertDoesNotContain("There are no reviews for activity 'WACT-AKL-001-001'.", true);
+    }
+
+    // test if the resolution to private reviews is set and displayed correctly
+    @Test
+    public void T3_XX_resolve_review_check_details() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_14_OPERATORS,
+              CREATE_27_ACTIVITIES,
+              ADD_PRIVATE_REVIEW,
+              "WACT-AKL-001-001",
+              options("Felicia", "felicia@email.com", "5", "Great", "y"),
+              RESOLVE_REVIEW,
+              "WACT-AKL-001-001-R1",
+              "'So sorry to hear that!'",
+              DISPLAY_REVIEWS,
+              "WACT-AKL-001-001",
+              EXIT));
+      assertContains("[5/5] Private review (WACT-AKL-001-001-R1) by 'Felicia'");
+      assertContains("Resolved: \"So sorry to hear that!\"");
+      assertDoesNotContain("Resolved: \"-\"", true);
+    }
+
+    // test if private reviews being resolved don't print the error messages for not being private
+    // and not having an invalid activity ID (basically just a hardcode detector)
+    @Test
+    public void T3_XX_resolve_review_unneeded_messages() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_14_OPERATORS,
+              CREATE_27_ACTIVITIES,
+              ADD_PRIVATE_REVIEW,
+              "WACT-AKL-001-001",
+              options("Felicia", "felicia@email.com", "5", "Great", "y"),
+              RESOLVE_REVIEW,
+              "WACT-AKL-001-001-R1",
+              "'So sorry to hear that!'",
+              DISPLAY_REVIEWS,
+              "WACT-AKL-001-001",
+              EXIT));
+      assertContains("[5/5] Private review (WACT-AKL-001-001-R1) by 'Felicia'");
+      assertContains("Resolved: \"So sorry to hear that!\"");
+      assertDoesNotContain("Review not found: 'WACT-AKL-001-001-R1' is an invalid review ID.");
+      assertDoesNotContain("Review not resolved: 'WACT-AKL-001-001-R1' is not a private review.");
+    }
+
+    // test that when public reviews are endorsed, it does not print the error message for not
+    // being a public review, or having an invalid review ID
+    @Test
+    public void T3_XX_endorse_public_review() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_14_OPERATORS,
+              CREATE_27_ACTIVITIES,
+              ADD_PUBLIC_REVIEW,
+              "WACT-AKL-001-001",
+              options("Alice", "n", "3", "Could be better"),
+              ENDORSE_REVIEW,
+              "WACT-AKL-001-001-R1",
+              EXIT));
+      assertContains("Review 'WACT-AKL-001-001-R1' endorsed successfully.");
+      assertDoesNotContain("Review not endorsed: 'WACT-AKL-001-001-R1' is not a public review.");
+      assertDoesNotContain("Review not found: 'WACT-AKL-001-001-R1' is an invalid review ID.");
+    }
+
+    // test that when images are uploaded to private reviews, it does not print the error message
+    // for not being an expert review, or the review not being found
+    @Test
+    public void T3_XX_upload_review_image_correct_messages() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_14_OPERATORS,
+              CREATE_27_ACTIVITIES,
+              ADD_EXPERT_REVIEW,
+              "WACT-AKL-001-001",
+              options("Eve", "4", "Good", "y"),
+              UPLOAD_REVIEW_IMAGE,
+              "WACT-AKL-001-001-R1",
+              "'image.png'",
+              EXIT));
+      assertContains("Image 'image.png' uploaded successfully for review 'WACT-AKL-001-001-R1'.");
+      assertDoesNotContain("Image not uploaded: 'WACT-AKL-001-001-R1' is not an expert review.");
+      assertDoesNotContain("Review not found: 'WACT-AKL-001-001-R1' is an invalid review ID.");
+    }
+
+    // test that when there are no reviewed activities in any location, that all
+    // locations print the same message (disregarding the location itself)
+    @Test
+    public void T3_XX_display_top_activities_no_reviews() throws Exception {
+      runCommands(unpack(CREATE_14_OPERATORS, CREATE_27_ACTIVITIES, DISPLAY_TOP_ACTIVITIES, EXIT));
+
+      assertContains("No reviewed activities found in Auckland | Tāmaki Makaurau.");
+      assertContains("No reviewed activities found in Hamilton | Kirikiriroa.");
+      assertContains("No reviewed activities found in Tauranga.");
+      assertContains("No reviewed activities found in Taupo | Taupō-nui-a-Tia.");
+      assertContains("No reviewed activities found in Wellington | Te Whanganui-a-Tara.");
+      assertContains("No reviewed activities found in Nelson | Whakatu.");
+      assertContains("No reviewed activities found in Christchurch | Ōtautahi.");
+      assertContains("No reviewed activities found in Dunedin | Ōtepoti.");
+      assertDoesNotContain("Top reviewed activity in", true);
+    }
+
+    // test if private reviews are discounted from the reviews
+    @Test
+    public void T3_XX_display_top_activities_private_reviews() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_14_OPERATORS,
+              CREATE_27_ACTIVITIES,
+              ADD_PRIVATE_REVIEW,
+              "WACT-AKL-001-001",
+              options("Felicia", "felicia@email.com", "5", "Great", "n"),
+              DISPLAY_TOP_ACTIVITIES,
+              EXIT));
+      assertContains("No reviewed activities found in Auckland | Tāmaki Makaurau.");
+      assertDoesNotContain("Top reviewed activity in Auckland | Tāmaki Makaurau:");
+    }
   }
 
   private static final Object[] CREATE_14_OPERATORS =

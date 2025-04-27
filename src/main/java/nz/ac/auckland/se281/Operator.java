@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Operator {
   private String operatorName;
   private Types.Location location;
-  private String opID;
+  private String opId;
   private ArrayList<Activity> activities;
 
-  public Operator(String operatorName, Types.Location location, String opID) {
+  public Operator(String operatorName, Types.Location location, String opId) {
     this.operatorName = operatorName;
     this.location = location;
-    this.opID = opID;
+    this.opId = opId;
     this.activities = new ArrayList<>();
   }
 
@@ -19,8 +19,8 @@ public class Operator {
     return this.operatorName;
   }
 
-  public String getOpID() {
-    return this.opID;
+  public String getopId() {
+    return this.opId;
   }
 
   public Types.Location getLocation() {

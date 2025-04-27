@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class Activity {
   private String name;
-  private Types.ActivityType Type;
-  private String activityID;
+  private Types.ActivityType type;
+  private String activityId;
   private ArrayList<Review> reviews = new ArrayList<Review>();
 
-  public Activity(String name, Types.ActivityType Type, String activityID) {
+  public Activity(String name, Types.ActivityType type, String activityId) {
     this.name = name;
-    this.Type = Type;
-    this.activityID = activityID;
+    this.type = type;
+    this.activityId = activityId;
   }
 
   public String getName() {
@@ -19,11 +19,11 @@ public class Activity {
   }
 
   public Types.ActivityType getType() {
-    return Type;
+    return type;
   }
 
-  public String getActivityID() {
-    return activityID;
+  public String getactivityId() {
+    return activityId;
   }
 
   public ArrayList<Review> getReviews() {

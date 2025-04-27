@@ -82,7 +82,7 @@ public class OperatorManagementSystem {
     String operatorName = op.returnOperator();
     // String locationAbbr = op.getLocation().getLocationAbbreviation();
     System.out.println(
-        "  * " + operatorName + " ('" + op.getOpID() + "' located in '" + location + "')");
+        "  * " + operatorName + " ('" + op.getopId() + "' located in '" + location + "')");
   }
 
   // CREATE OPERATOR STARTS HERE
@@ -123,16 +123,16 @@ public class OperatorManagementSystem {
           count++;
         }
       }
-      String operatorID =
+      String operatorId =
           initials
               + "-"
               + locationFound.getLocationAbbreviation()
               + "-"
               + String.format("%03d", count);
-      Operator op = new Operator(operatorName, locationFound, operatorID);
+      Operator op = new Operator(operatorName, locationFound, operatorId);
       operators.add(op);
 
-      MessageCli.OPERATOR_CREATED.printMessage(operatorName, operatorID, locationAsString);
+      MessageCli.OPERATOR_CREATED.printMessage(operatorName, operatorId, locationAsString);
     } else {
       MessageCli.OPERATOR_NOT_CREATED_INVALID_OPERATOR_NAME.printMessage(operatorName);
     }
@@ -144,7 +144,7 @@ public class OperatorManagementSystem {
   public void viewActivities(String operatorId) {
     for (Operator op : operators) {
 
-      if (op.getOpID().equals(operatorId)) {
+      if (op.getopId().equals(operatorId)) {
         ArrayList<Activity> activities = op.getActivities();
 
         if (activities.isEmpty()) {
@@ -162,7 +162,7 @@ public class OperatorManagementSystem {
           for (Activity activity : activities) {
             // we  need the activity id
             ActivityType type = activity.getType();
-            String activityID = activity.getActivityID();
+            String activityID = activity.getactivityId();
             MessageCli.ACTIVITY_ENTRY.printMessage(
                 activity.getName(), activityID, type.toString(), op.returnOperator());
           }
@@ -186,10 +186,10 @@ public class OperatorManagementSystem {
       Types.ActivityType type = Types.ActivityType.fromString(activityType);
 
       for (Operator op : operators) {
-        if (op.getOpID().equals(operatorId)) {
+        if (op.getopId().equals(operatorId)) {
           // need to make Activity id
           int activityCount = op.getActivities().size() + 1;
-          String activityID = op.getOpID() + "-" + String.format("%03d", activityCount);
+          String activityID = op.getopId() + "-" + String.format("%03d", activityCount);
 
           Activity newActivity = new Activity(activityName, type, activityID);
           op.addActivity(newActivity);
@@ -226,7 +226,7 @@ public class OperatorManagementSystem {
         for (Operator op : operators) {
           ArrayList<Activity> activities = op.getActivities();
           for (Activity activity : activities) {
-            String activityID = activity.getActivityID();
+            String activityID = activity.getactivityId();
             String type = activity.getType().toString();
             String operatorName = op.returnOperator();
 
@@ -276,7 +276,7 @@ public class OperatorManagementSystem {
             if (activityName.contains(keyword.toLowerCase().trim())
                 || activityType.contains(keyword.toLowerCase().trim())
                 || opLocation.contains(keyword.toLowerCase().trim())) {
-              String activityID = activity.getActivityID();
+              String activityID = activity.getactivityId();
               String type = activity.getType().toString();
               String operatorName = op.returnOperator();
               MessageCli.ACTIVITY_ENTRY.printMessage(
@@ -294,7 +294,7 @@ public class OperatorManagementSystem {
     for (Operator op : operators) {
       for (Activity activity : op.getActivities()) {
         // check if the activity id is the same as the one we are looking for
-        if (activity.getActivityID().equals(activityId)) {
+        if (activity.getactivityId().equals(activityId)) {
           // if it is the same we need to add the review
           String author = options[0];
           boolean isAnonymous = options[1].equalsIgnoreCase("y");
@@ -316,7 +316,7 @@ public class OperatorManagementSystem {
 
           // message REVIEW_ADDED("%s review '%s' added successfully for activity '%s'."),
           MessageCli.REVIEW_ADDED.printMessage(
-              "Public", reviewId, activity.getName(), activity.getActivityID());
+              "Public", reviewId, activity.getName(), activity.getactivityId());
           return;
         }
       }
@@ -328,7 +328,7 @@ public class OperatorManagementSystem {
   public void addPrivateReview(String activityId, String[] options) {
     for (Operator op : operators) {
       for (Activity activity : op.getActivities()) {
-        if (activity.getActivityID().equals(activityId)) {
+        if (activity.getactivityId().equals(activityId)) {
           // if it is the same we need to add the review
           String author = options[0];
           String email = options[1];
@@ -350,7 +350,7 @@ public class OperatorManagementSystem {
 
           // print out the message
           MessageCli.REVIEW_ADDED.printMessage(
-              "Private", reviewId, activity.getName(), activity.getActivityID());
+              "Private", reviewId, activity.getName(), activity.getactivityId());
           return;
         }
       }
@@ -361,7 +361,7 @@ public class OperatorManagementSystem {
   public void addExpertReview(String activityId, String[] options) {
     for (Operator op : operators) {
       for (Activity activity : op.getActivities()) {
-        if (activity.getActivityID().equals(activityId)) {
+        if (activity.getactivityId().equals(activityId)) {
           // if it is the same we need to add the review
           String author = options[0];
           int rating = Integer.parseInt(options[1]);
@@ -383,7 +383,7 @@ public class OperatorManagementSystem {
 
           // print out the message
           MessageCli.REVIEW_ADDED.printMessage(
-              "Expert", reviewId, activity.getName(), activity.getActivityID());
+              "Expert", reviewId, activity.getName(), activity.getactivityId());
           return;
         }
       }
@@ -398,7 +398,7 @@ public class OperatorManagementSystem {
     for (Operator op : operators) {
       for (Activity activity : op.getActivities()) {
         // check if the activity id is the same as the one we are looking for
-        if (activity.getActivityID().equals(activityId)) {
+        if (activity.getactivityId().equals(activityId)) {
           // if it is the same we need to get the reviews
           ArrayList<Review> reviews = activity.getReviews();
 
@@ -508,7 +508,7 @@ public class OperatorManagementSystem {
         locationList.add(location);
       }
     }
-
+    // Lets go thru the locationList
     for (Location loc : locationList) {
       Activity topActivity = null;
       double highestAverage = -1;
@@ -527,7 +527,7 @@ public class OperatorManagementSystem {
               count++;
             }
           }
-
+          // Claculate and find the highest average
           if (count > 0) {
             double average = (double) totalRating / count;
 
@@ -540,10 +540,11 @@ public class OperatorManagementSystem {
           }
         }
       }
-
+      // If theres nothing then show the message
       if (topActivity == null) {
         MessageCli.NO_REVIEWED_ACTIVITIES.printMessage(loc.getFullName());
       } else {
+        // Print the top activity for the location
         System.out.printf(
             MessageCli.TOP_ACTIVITY.getMessage(
                 loc.getFullName(), topActivity.getName(), String.format("%.2f", highestAverage)));
