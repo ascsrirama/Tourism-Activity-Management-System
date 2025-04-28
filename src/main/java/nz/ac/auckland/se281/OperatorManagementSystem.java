@@ -87,28 +87,29 @@ public class OperatorManagementSystem {
 
   // CREATE OPERATOR STARTS HERE
   public void createOperator(String operatorName, String location) {
+    String trimmedLocation = location.trim();
 
-    Location locationFound = Location.fromString(location);
+    Location locationFound = Location.fromString(trimmedLocation);
 
     if (locationFound == null) {
-      MessageCli.OPERATOR_NOT_CREATED_INVALID_LOCATION.printMessage(location);
+      MessageCli.OPERATOR_NOT_CREATED_INVALID_LOCATION.printMessage(trimmedLocation);
       return;
     }
-
-    if (operatorName.trim().length() >= 3) {
+    String trimmedOperatorName = operatorName.trim();
+    if (trimmedOperatorName.trim().length() >= 3) {
       String locationAsString = locationFound.getFullName();
 
       // This thing is to check for duplicates of operators
       for (Operator existing : operators) {
-        if (existing.returnOperator().equals(operatorName)
+        if (existing.returnOperator().equals(trimmedOperatorName)
             && existing.getLocation().equals(locationFound)) {
           MessageCli.OPERATOR_NOT_CREATED_ALREADY_EXISTS_SAME_LOCATION.printMessage(
-              operatorName, locationAsString);
+              trimmedOperatorName, locationAsString);
           return;
         }
       }
       // This will make that id thing that has intials of operator and location and the 3dig no.
-      String[] words = operatorName.split(" ");
+      String[] words = trimmedOperatorName.split(" ");
       String output = "";
       String initials = "";
       for (String word : words) {
@@ -124,17 +125,17 @@ public class OperatorManagementSystem {
         }
       }
       String operatorId =
-          initials
+          initials.toUpperCase()
               + "-"
               + locationFound.getLocationAbbreviation()
               + "-"
               + String.format("%03d", count);
-      Operator op = new Operator(operatorName, locationFound, operatorId);
+      Operator op = new Operator(trimmedOperatorName, locationFound, operatorId);
       operators.add(op);
 
-      MessageCli.OPERATOR_CREATED.printMessage(operatorName, operatorId, locationAsString);
+      MessageCli.OPERATOR_CREATED.printMessage(trimmedOperatorName, operatorId, locationAsString);
     } else {
-      MessageCli.OPERATOR_NOT_CREATED_INVALID_OPERATOR_NAME.printMessage(operatorName);
+      MessageCli.OPERATOR_NOT_CREATED_INVALID_OPERATOR_NAME.printMessage(trimmedOperatorName);
     }
   }
 
@@ -177,8 +178,9 @@ public class OperatorManagementSystem {
   // VIEW ACTIVITES ENDS HERE ===========================
 
   public void createActivity(String activityName, String activityType, String operatorId) {
+    activityName = activityName.trim();
 
-    if (activityName.trim().length() < 3) {
+    if (activityName.length() < 3) {
       MessageCli.ACTIVITY_NOT_CREATED_INVALID_ACTIVITY_NAME.printMessage(activityName);
       return;
     } else {
@@ -248,15 +250,18 @@ public class OperatorManagementSystem {
           String activityName = activity.getName().toLowerCase();
           String activityType = activity.getType().toString().toLowerCase();
           String opLocation = op.getLocation().getFullName().toLowerCase();
+          String opLocationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
 
+          // We will check if the keyword is a match and then increment the count
           if (activityName.contains(keyword.toLowerCase().trim())
               || activityType.contains(keyword.toLowerCase().trim())
-              || opLocation.contains(keyword.toLowerCase().trim())) {
+              || opLocation.contains(keyword.toLowerCase().trim())
+              || opLocationAbbr.contains(keyword.toLowerCase().trim())) {
             totalCount++;
           }
         }
       }
-      // if there is nothing so , total count = 0
+      // We can now check if the totalCount is 0 or not and print the message correctly
       if (totalCount == 0) {
         MessageCli.ACTIVITIES_FOUND.printMessage("are", "no", "ies", ".");
       } else {
@@ -272,10 +277,13 @@ public class OperatorManagementSystem {
             String activityName = activity.getName().toLowerCase();
             String activityType = activity.getType().toString().toLowerCase();
             String opLocation = op.getLocation().getFullName().toLowerCase();
+            String opLocationAbbr = op.getLocation().getLocationAbbreviation().toLowerCase();
 
             if (activityName.contains(keyword.toLowerCase().trim())
                 || activityType.contains(keyword.toLowerCase().trim())
-                || opLocation.contains(keyword.toLowerCase().trim())) {
+                || opLocation.contains(keyword.toLowerCase().trim())
+                || opLocationAbbr.contains(keyword.toLowerCase().trim())) {
+
               String activityId = activity.getactivityId();
               String type = activity.getType().toString();
               String operatorName = op.returnOperator();
@@ -301,7 +309,7 @@ public class OperatorManagementSystem {
           int rating = Integer.parseInt(options[2]);
           String reviewText = options[3];
 
-          // adjust the ratings
+          // we need to adjust the rating to be between 1 and 5 ( nearest valid rating )
           if (rating < 1) {
             rating = 1;
           }
@@ -558,7 +566,7 @@ public class OperatorManagementSystem {
         MessageCli.NO_REVIEWED_ACTIVITIES.printMessage(place.getFullName());
       } else {
         // Print the top activity for the location
-        System.out.printf(
+        System.out.println(
             MessageCli.TOP_ACTIVITY.getMessage(
                 place.getFullName(), topActivity.getName(), String.format("%.2f", highestAverage)));
       }
