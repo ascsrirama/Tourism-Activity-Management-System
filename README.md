@@ -1,18 +1,35 @@
-# 🧭 Tourism Activity Management System 🌏
+<div align="center">
+
+# 🧭 Tourism Activity Management System
+
+**A Java CLI for managing tourism operators, activities, and reviews across New Zealand.**
 
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![Maven](https://img.shields.io/badge/Build-Maven-C71A36?style=flat-square&logo=apachemaven&logoColor=white)
 ![JUnit](https://img.shields.io/badge/Tests-JUnit%204-25A162?style=flat-square&logo=junit5&logoColor=white)
 ![CLI](https://img.shields.io/badge/Interface-CLI-000000?style=flat-square)
 
-A Java CLI app for managing tourism operators, their activities, and reviews across New Zealand. Create operators, add activities under them, and leave public, private, or expert reviews — all through simple terminal commands.
+<img src="https://i.imgur.com/KkTk2Lm.png" width="60"/>
 
-## How it works
+</div>
 
-Everything is driven from an interactive CLI: create an operator in a supported location, add activities under it, then leave public, private, or expert reviews on those activities.
+---
+
+Create operators in supported locations, add activities under them, and leave public, private, or expert reviews — everything driven from an interactive terminal.
+
+## ✨ Features
+
+- 🏙️ Create and search operators across supported NZ locations
+- 🎢 Add and search activities under each operator
+- 📝 Public, private, and expert review types
+- 👍 Endorse public reviews, resolve private reviews
+- 🖼️ Attach images to expert reviews
+- 📊 View the top activity in each location
+
+## 🧩 Commands
 
 | Command | Description |
-| --- | --- |
+|---|---|
 | `CREATE_OPERATOR <OPERATOR_NAME> <LOCATION>` | Create a new operator in a supported location |
 | `SEARCH_OPERATORS <KEYWORD>` | Search for operators by name or location |
 | `VIEW_ACTIVITIES <OPERATOR_ID>` | View all activities offered by an operator |
@@ -29,7 +46,7 @@ Everything is driven from an interactive CLI: create an operator in a supported 
 | `HELP` | Print available commands |
 | `EXIT` | Exit the application |
 
-## Getting started
+## 🚀 Getting started
 
 **Prerequisites:** JDK 21, Maven (or use the bundled `mvnw` / `mvnw.cmd` wrapper).
 
@@ -43,4 +60,8 @@ mvnw.cmd clean compile exec:java@run
 
 ---
 
-![ASC](https://i.imgur.com/KkTk2Lms.png) Rama Anumanchipalli
+<div align="center">
+
+Rama Anumanchipalli
+
+</div>
